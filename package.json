@@ -1,7 +1,7 @@
 {
   "name": "dsh-openai-codex-auth",
   "description": "Unofficial OpenAI Codex provider for DeepSeek Harness with ChatGPT subscription sign-in.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "type": "module",
   "main": "lib/index.js",
   "files": [
@@ -29,7 +29,7 @@
     }
   },
   "scripts": {
-    "check": "node --check lib/index.js && node --check lib/provider.js && node --check lib/client.js && node --check lib/usage.js && node --check install.mjs",
+    "check": "node --check lib/index.js && node --check lib/provider.js && node --check lib/proxy.js && node --check lib/client.js && node --check lib/usage.js && node --check install.mjs",
     "test": "node --test",
     "prepublishOnly": "npm run check && npm test"
   },
@@ -45,7 +45,8 @@
     "node": ">=22.19.0"
   },
   "dependencies": {
-    "https-proxy-agent": "^7.0.6"
+    "https-proxy-agent": "^7.0.6",
+    "undici": "^8.10.0"
   },
   "publishConfig": {
     "access": "public"

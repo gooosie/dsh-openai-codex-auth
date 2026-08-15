@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { getSupportedThinkingLevels } from "@earendil-works/pi-ai";
+import { createModels, getSupportedThinkingLevels } from "@earendil-works/pi-ai";
 import { createCodexProvider, DEFAULT_CODEX_REASONING_LEVEL } from "../lib/provider.js";
 
 test("Codex models expose distinct reasoning levels only", () => {
@@ -21,6 +21,18 @@ test("Codex provider keeps OAuth and streaming behavior", () => {
 	assert.equal(provider.id, "openai-codex");
 	assert.equal(typeof provider.auth.oauth?.login, "function");
 	assert.equal(typeof provider.streamSimple, "function");
+});
+
+test("Codex provider accepts the refreshed OAuth access token from DSH", async () => {
+	const models = createModels();
+	const provider = createCodexProvider();
+	models.setProvider(provider);
+	const model = provider.getModels()[0];
+	const accessToken = "test.oauth.access-token";
+
+	const resolved = await models.getAuth(model, { apiKey: accessToken });
+
+	assert.equal(resolved?.auth.apiKey, accessToken);
 });
 
 test("Codex uses an explicit supported level instead of provider default", () => {
