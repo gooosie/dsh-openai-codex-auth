@@ -1,0 +1,71 @@
+{
+  "name": "dsh-openai-codex-auth",
+  "description": "Unofficial OpenAI Codex provider for DeepSeek Harness with ChatGPT subscription sign-in.",
+  "version": "0.2.0",
+  "type": "module",
+  "main": "lib/index.js",
+  "files": [
+    "lib",
+    "docs/assets",
+    "install.mjs",
+    "README.zh-CN.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md"
+  ],
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-runtime",
+        "@deepseek-ai/dsh-client-ui-settings",
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-api-remotes"
+      ],
+      "platform": "web"
+    }
+  },
+  "scripts": {
+    "check": "node --check lib/index.js && node --check lib/provider.js && node --check lib/client.js && node --check lib/usage.js && node --check install.mjs",
+    "test": "node --test",
+    "prepublishOnly": "npm run check && npm test"
+  },
+  "keywords": [
+    "deepseek-harness",
+    "dsh-plugin",
+    "openai",
+    "codex",
+    "chatgpt",
+    "oauth"
+  ],
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "dependencies": {
+    "https-proxy-agent": "^7.0.6"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gooosie/dsh-openai-codex-auth.git"
+  },
+  "homepage": "https://github.com/gooosie/dsh-openai-codex-auth#readme",
+  "bugs": {
+    "url": "https://github.com/gooosie/dsh-openai-codex-auth/issues"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh-credentials": "^0.1.0-rc.6",
+    "@deepseek-ai/dsh-llm": "^0.1.0-rc.6",
+    "@deepseek-ai/dsh-llm-pi-ai": "^0.1.0-rc.6",
+    "@deepseek-ai/dsh-settings": "^0.1.0-rc.6",
+    "@deepseek-ai/dsh-tools": "^0.1.0-rc.6",
+    "@deepseek-ai/schemastery": "^3.18.1",
+    "@earendil-works/pi-ai": "^0.82.1"
+  },
+  "license": "MIT"
+}
