@@ -23,28 +23,16 @@ of `openai-codex` causes an adapter registration conflict.
 ## Requirements
 
 - Node.js `>=22.19.0`.
-- A DSH `0.1.0-rc.6` Web profile that has been started at least once.
+- A DSH `0.1.0-rc.6` Web profile.
 - A ChatGPT subscription eligible for Codex, with device-code sign-in enabled.
 
 ## Install or update
 
-### From npm
-
-Windows PowerShell:
-
-```powershell
-dsh plugin --profile web add dsh-openai-codex-auth
-
-$dshRoot = if ($env:DSH_HOME) { $env:DSH_HOME } else { Join-Path $HOME ".dsh" }
-node (Join-Path $dshRoot "profiles\node_modules\dsh-openai-codex-auth\install.mjs")
-```
-
-Linux or macOS:
-
 ```sh
 dsh plugin --profile web add dsh-openai-codex-auth
-node "${DSH_HOME:-$HOME/.dsh}/profiles/node_modules/dsh-openai-codex-auth/install.mjs"
 ```
+
+Restart DSH after installing or updating.
 
 ### From source
 
@@ -53,12 +41,7 @@ npm install
 dsh plugin --profile web add .
 ```
 
-Then run the `install.mjs` command shown above for your platform. Set
-`DSH_HOME` before these commands if DSH is not under `~/.dsh`.
-
-The installer applies the Web settings entry required by DSH rc.6. It stops
-before changing the profile if `openai-codex` already has another owner.
-Restart DSH after installing or updating.
+The package is a DSH bundle, so no separate install script is required.
 
 ## Usage
 
@@ -72,18 +55,7 @@ DSH agents can also call `codex_login`, `codex_status`, and `codex_logout`.
 
 Sign out under **Settings → OpenAI Codex** first, then run:
 
-Windows PowerShell:
-
-```powershell
-$dshRoot = if ($env:DSH_HOME) { $env:DSH_HOME } else { Join-Path $HOME ".dsh" }
-node (Join-Path $dshRoot "profiles\node_modules\dsh-openai-codex-auth\install.mjs") --uninstall
-dsh plugin --profile web remove dsh-openai-codex-auth
-```
-
-Linux or macOS:
-
 ```sh
-node "${DSH_HOME:-$HOME/.dsh}/profiles/node_modules/dsh-openai-codex-auth/install.mjs" --uninstall
 dsh plugin --profile web remove dsh-openai-codex-auth
 ```
 

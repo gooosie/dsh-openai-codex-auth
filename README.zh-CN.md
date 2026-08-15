@@ -23,28 +23,16 @@ adapter 注册冲突。
 ## 要求
 
 - Node.js `>=22.19.0`；
-- 已至少启动过一次的 DSH `0.1.0-rc.6` Web profile；
+- DSH `0.1.0-rc.6` Web profile；
 - 具有 Codex 使用资格并已启用设备码登录的 ChatGPT 订阅。
 
 ## 安装或更新
 
-### 从 npm 安装
-
-Windows PowerShell：
-
-```powershell
-dsh plugin --profile web add dsh-openai-codex-auth
-
-$dshRoot = if ($env:DSH_HOME) { $env:DSH_HOME } else { Join-Path $HOME ".dsh" }
-node (Join-Path $dshRoot "profiles\node_modules\dsh-openai-codex-auth\install.mjs")
-```
-
-Linux 或 macOS：
-
 ```sh
 dsh plugin --profile web add dsh-openai-codex-auth
-node "${DSH_HOME:-$HOME/.dsh}/profiles/node_modules/dsh-openai-codex-auth/install.mjs"
 ```
+
+安装或更新后重启 DSH。
 
 ### 从源码安装
 
@@ -53,11 +41,7 @@ npm install
 dsh plugin --profile web add .
 ```
 
-随后执行上方对应平台的 `install.mjs` 命令。如果 DSH 不在 `~/.dsh`，请先设置
-`DSH_HOME`。
-
-安装器会加入 DSH rc.6 所需的 Web 设置入口。如果 `openai-codex` 路由已有其他
-所有者，它会在修改 profile 前停止。安装或更新后请重启 DSH。
+这个包本身就是 DSH bundle，不需要再执行安装脚本。
 
 ## 使用
 
@@ -71,18 +55,7 @@ DSH agent 也可以调用 `codex_login`、`codex_status` 和 `codex_logout`。
 
 先在“设置 → OpenAI Codex”中退出登录，然后运行：
 
-Windows PowerShell：
-
-```powershell
-$dshRoot = if ($env:DSH_HOME) { $env:DSH_HOME } else { Join-Path $HOME ".dsh" }
-node (Join-Path $dshRoot "profiles\node_modules\dsh-openai-codex-auth\install.mjs") --uninstall
-dsh plugin --profile web remove dsh-openai-codex-auth
-```
-
-Linux 或 macOS：
-
 ```sh
-node "${DSH_HOME:-$HOME/.dsh}/profiles/node_modules/dsh-openai-codex-auth/install.mjs" --uninstall
 dsh plugin --profile web remove dsh-openai-codex-auth
 ```
 

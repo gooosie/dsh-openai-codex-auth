@@ -23,12 +23,11 @@ test("login card uses concise copy and provides a device-code copy action", () =
 	assert.match(clientSource, /navigator\.clipboard\.writeText\(deviceCode\)/);
 });
 
-test("logged-in card requests and displays Codex usage without blocking login", () => {
-	assert.match(clientSource, /controller\.setAction\("refresh_usage"\)/);
+test("logged-in card displays Codex usage returned by the host snapshot", () => {
+	assert.match(clientSource, /usageStatus !== "loading"/);
 	assert.match(clientSource, /usageTitle: "Codex 用量"/);
 	assert.match(clientSource, /remaining: "剩余"/);
 	assert.match(clientSource, /usageStatus === "error"/);
-	assert.match(clientSource, /const staleError = usageStatus === "error"/);
 });
 
 test("usage limits use accessible progress bars and aligned actions", () => {
@@ -45,7 +44,8 @@ test("weekly usage is described as an exact seven-day window", () => {
 });
 
 test("usage refreshes automatically without a persistent refresh button", () => {
-	assert.match(clientSource, /controller\.setAction\("refresh_usage"\)/);
+	assert.match(clientSource, /unwrap\(await this\.remote\.snapshot\(\)\)/);
 	assert.doesNotMatch(clientSource, /run\("refresh_usage"\)/);
+	assert.doesNotMatch(clientSource, /\.setAction\(/);
 	assert.doesNotMatch(clientSource, /refreshUsage:/);
 });
