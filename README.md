@@ -23,7 +23,7 @@ of `openai-codex` causes an adapter registration conflict.
 ## Requirements
 
 - Node.js `>=22.19.0`.
-- A DSH `0.1.0-rc.6` Web profile.
+- A DSH `0.1.1-rc.2` Web profile.
 - A ChatGPT subscription eligible for Codex, with device-code sign-in enabled.
 
 ## Install or update

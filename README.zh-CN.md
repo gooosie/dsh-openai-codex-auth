@@ -23,7 +23,7 @@ adapter 注册冲突。
 ## 要求
 
 - Node.js `>=22.19.0`；
-- DSH `0.1.0-rc.6` Web profile；
+- DSH `0.1.1-rc.2` Web profile；
 - 具有 Codex 使用资格并已启用设备码登录的 ChatGPT 订阅。
 
 ## 安装或更新
