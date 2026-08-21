@@ -1,7 +1,7 @@
 {
   "name": "dsh-openai-codex-auth",
   "description": "Unofficial OpenAI Codex provider for DeepSeek Harness with ChatGPT subscription sign-in.",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "type": "module",
   "main": "lib/index.js",
   "files": [

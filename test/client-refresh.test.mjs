@@ -37,6 +37,16 @@ test("usage limits use accessible progress bars and aligned actions", () => {
 	assert.match(clientSource, /style: actionRowStyle/);
 });
 
+test("usage limits are grouped by model with subtle separators", () => {
+	assert.match(clientSource, /function groupUsageLimits\(limits\)/);
+	assert.match(clientSource, /const byName = new Map\(\)/);
+	assert.match(clientSource, /role: "group"/);
+	assert.match(clientSource, /children: group\.name/);
+	assert.match(clientSource, /separated: index > 0/);
+	assert.match(clientSource, /usageGroupSeparatedStyle = \{ borderTop: "1px solid var\(--dsw-alias-border-l2\)"/);
+	assert.match(clientSource, /children: windowLabel/);
+});
+
 test("weekly usage is described as an exact seven-day window", () => {
 	assert.match(clientSource, /return `\$\{seconds \/ 86400\} \$\{t\("days"\)\}`/);
 	assert.match(clientSource, /days: "天"/);
