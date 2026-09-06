@@ -31,17 +31,28 @@ test("web client uses the Typed Remote gateway instead of settings allowlists", 
 	assert.match(client, /ctx\.remote\.\$mount\(REMOTE_CONTRIBUTION\)/);
 });
 
-test("web client targets the DSH 0.1.1 module contract", () => {
+test("web client targets the DSH 0.1.2 module contract", () => {
 	const dshPeers = Object.entries(packageJson.peerDependencies)
 		.filter(([name]) => name.startsWith("@deepseek-ai/dsh-"));
 	for (const [name, range] of dshPeers) {
-		assert.equal(range, "^0.1.1-rc.2", `${name} must match the tested DSH release`);
+		assert.equal(range, "^0.1.2-rc.1", `${name} must match the tested DSH release`);
 	}
+	assert.equal(packageJson.peerDependencies["@deepseek-ai/cordis"], "^4.0.2");
+	assert.equal(packageJson.peerDependencies["@earendil-works/pi-ai"], "^0.84.4");
+	assert.equal(packageJson.dsh.client.inject.includes("@deepseek-ai/dsh-client-runtime"), false);
 	assert.equal("@deepseek-ai/dsh-client-web-react" in packageJson.peerDependencies, false);
 
 	const client = readFileSync(join(projectRoot, "lib", "client.js"), "utf8");
+	assert.match(client, /require\("@deepseek-ai\/dsh-client-store"\)/);
+	assert.doesNotMatch(client, /dsh-client-runtime/);
 	assert.doesNotMatch(client, /dsh-client-web-react/);
 	assert.match(client, /react\.useSyncExternalStore/);
+
+	for (const readme of ["README.md", "README.zh-CN.md"]) {
+		const text = readFileSync(join(projectRoot, readme), "utf8");
+		assert.match(text, /DSH `0\.1\.2-rc\.1` Web profile/);
+		assert.doesNotMatch(text, /0\.1\.1-rc\.2/);
+	}
 });
 
 test("Typed Remote failures expose only allowlisted messages", () => {
