@@ -23,7 +23,7 @@ adapter 注册冲突。
 ## 要求
 
 - Node.js `>=22.19.0`；
-- DSH `0.1.2-rc.1` Web profile；
+- DSH `0.1.5-rc.2` Web profile；
 - 具有 Codex 使用资格并已启用设备码登录的 ChatGPT 订阅。
 
 ## 安装或更新
@@ -50,6 +50,20 @@ dsh plugin --profile web add .
 3. 在模型选择器的“OpenAI Codex”下选择模型。
 
 DSH agent 也可以调用 `codex_login`、`codex_status` 和 `codex_logout`。
+
+### 网络代理
+
+模型、登录和用量请求统一使用 DSH 的 `fetch` 网络传输。请在启动 DSH 前配置
+`HTTPS_PROXY` / `HTTP_PROXY` / `ALL_PROXY` 和 `NO_PROXY`，或写入
+`$DSH_HOME/.env`。插件不再读取 Windows 系统代理，也不再设置全局连接管理器。
+修改代理设置后需要重启 DSH。
+
+例如在 PowerShell 中（请替换为你的代理地址）：
+
+```powershell
+$env:HTTPS_PROXY = "http://127.0.0.1:7897"
+dsh web
+```
 
 ## 卸载
 

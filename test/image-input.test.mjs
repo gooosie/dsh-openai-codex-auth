@@ -3,7 +3,7 @@ import test from "node:test";
 import { Context } from "@deepseek-ai/cordis";
 import { OpenAICodexAuthService } from "../lib/index.js";
 
-function createImageHarness(t, readImageRequest) {
+function createImageHarness(t, readImageRequest, modelId) {
 	const ctx = new Context();
 	let adapter;
 	for (const key of ["llm", "tools", "attachments"]) ctx.provide(key);
@@ -14,7 +14,8 @@ function createImageHarness(t, readImageRequest) {
 	// Keep authentication and transport offline; exercise the real registered adapter.
 	t.mock.method(adapter.config, "resolveApiKey", async () => "test-access-token");
 	const profile = adapter.config.profiles().get("openai-codex");
-	const model = profile.piProvider.getModels().find((entry) => entry.input.includes("image"));
+	const model = profile.piProvider.getModels().find((entry) =>
+		entry.input.includes("image") && (modelId === undefined || entry.id === modelId));
 	assert.ok(model, "Codex exposes an image-capable model");
 	let providerContext;
 	t.mock.method(profile.piProvider, "streamSimple", async function* (_model, context) {
@@ -39,28 +40,30 @@ function createImageHarness(t, readImageRequest) {
 	};
 }
 
-test("registered Codex adapter prepares image input before calling the provider", async (t) => {
-	const data = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a1ioAAAAASUVORK5CYII=", "base64");
-	const attachment = {
-		attachmentId: "test-image", mediaType: "image/png", bytes: data.length,
-		width: 1, height: 1
-	};
-	let imageReads = 0;
-	const stream = createImageHarness(t, async (ref, policy) => {
-		imageReads++;
-		assert.equal(ref, attachment);
-		assert.deepEqual(policy, { maxPixels: 4_194_304, maxBytes: 1_048_576 });
-		return { ...ref, data, variantId: "test-variant" };
+for (const modelId of ["gpt-5.5", "gpt-6-astra"]) {
+	test(`registered Codex adapter prepares image input for ${modelId}`, async (t) => {
+		const data = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a1ioAAAAASUVORK5CYII=", "base64");
+		const attachment = {
+			attachmentId: "test-image", mediaType: "image/png", bytes: data.length,
+			width: 1, height: 1
+		};
+		let imageReads = 0;
+		const stream = createImageHarness(t, async (ref, policy) => {
+			imageReads++;
+			assert.equal(ref, attachment);
+			assert.deepEqual(policy, { maxPixels: 4_194_304, maxBytes: 1_048_576 });
+			return { ...ref, data, variantId: "test-variant" };
+		}, modelId);
+		const providerContext = await stream([{ role: "user", content: [
+			{ type: "text", text: "Describe this image." },
+			{ type: "image", attachment }
+		] }]);
+		assert.equal(imageReads, 1);
+		assert.deepEqual(providerContext.messages[0].content.find((block) => block.type === "image"), {
+			type: "image", data: data.toString("base64"), mimeType: "image/png"
+		});
 	});
-	const providerContext = await stream([{ role: "user", content: [
-		{ type: "text", text: "Describe this image." },
-		{ type: "image", attachment }
-	] }]);
-	assert.equal(imageReads, 1);
-	assert.deepEqual(providerContext.messages[0].content.find((block) => block.type === "image"), {
-		type: "image", data: data.toString("base64"), mimeType: "image/png"
-	});
-});
+}
 
 for (const scenario of [
 	{ name: "at the base64 budget", bytes: 786_432, kept: 20 },

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { CODEX_USAGE_URL, parseCodexUsage, requestCodexUsage, resolveUsageProxy } from "../lib/usage.js";
+import { CODEX_USAGE_URL, parseCodexUsage, requestCodexUsage } from "../lib/usage.js";
 
 const payload = {
 	user_id: "must-not-leave-parser",
@@ -74,11 +74,46 @@ test("usage request never includes an error response body", async () => {
 	);
 });
 
-test("usage proxy resolution falls back to the enabled Windows system proxy", async () => {
-	const proxy = await resolveUsageProxy(CODEX_USAGE_URL, {
-		env: {},
-		platform: "win32",
-		readWindowsProxy: async () => "127.0.0.1:7897"
+test("usage uses the host fetch without selecting a dispatcher", async (t) => {
+	let calls = 0;
+	t.mock.method(globalThis, "fetch", async (url, init) => {
+		calls++;
+		assert.equal(url, CODEX_USAGE_URL);
+		assert.equal("dispatcher" in init, false);
+		assert.equal("agent" in init, false);
+		assert.equal(init.redirect, "error");
+		assert.ok(init.signal instanceof AbortSignal);
+		return Response.json(payload);
 	});
-	assert.equal(proxy?.toString(), "http://127.0.0.1:7897/");
+	await requestCodexUsage({ access: "fake-token", accountId: "fake-account" });
+	assert.equal(calls, 1);
+});
+
+test("usage rejects and cancels a chunked response over 1 MiB", async () => {
+	let cancelled = false;
+	const response = new Response(new ReadableStream({
+		pull(controller) { controller.enqueue(new Uint8Array(600_000)); },
+		cancel() { cancelled = true; }
+	}));
+	await assert.rejects(requestCodexUsage({ access: "fake-token", accountId: "fake-account" },
+		async () => response), /response was too large/);
+	assert.equal(cancelled, true);
+});
+
+test("usage accepts valid JSON exactly at the 1 MiB limit", async () => {
+	const json = JSON.stringify(payload);
+	const response = new Response(json.padEnd(1024 * 1024, " "));
+	const usage = await requestCodexUsage({ access: "fake-token", accountId: "fake-account" },
+		async () => response, 1000000);
+	assert.deepEqual(usage, parseCodexUsage(payload, 1000000));
+});
+
+test("usage cancels an HTTP error body without reading private details", async () => {
+	let cancelled = false;
+	const response = new Response(new ReadableStream({
+		cancel() { cancelled = true; }
+	}), { status: 401 });
+	await assert.rejects(requestCodexUsage({ access: "fake-token", accountId: "fake-account" },
+		async () => response), { message: "OpenAI Codex usage request failed (401)" });
+	assert.equal(cancelled, true);
 });

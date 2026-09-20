@@ -23,7 +23,7 @@ of `openai-codex` causes an adapter registration conflict.
 ## Requirements
 
 - Node.js `>=22.19.0`.
-- A DSH `0.1.2-rc.1` Web profile.
+- A DSH `0.1.5-rc.2` Web profile.
 - A ChatGPT subscription eligible for Codex, with device-code sign-in enabled.
 
 ## Install or update
@@ -50,6 +50,20 @@ The package is a DSH bundle, so no separate install script is required.
 3. Select a model under **OpenAI Codex** in the model selector.
 
 DSH agents can also call `codex_login`, `codex_status`, and `codex_logout`.
+
+### Network proxy
+
+Model, sign-in, and usage requests use DSH's shared `fetch` transport. Configure
+`HTTPS_PROXY` / `HTTP_PROXY` / `ALL_PROXY` and `NO_PROXY` before starting DSH,
+or in `$DSH_HOME/.env`. This plugin does not read Windows system proxy settings
+or install its own global dispatcher. Restart DSH after changing proxy settings.
+
+For example, in PowerShell (replace the address with your proxy):
+
+```powershell
+$env:HTTPS_PROXY = "http://127.0.0.1:7897"
+dsh web
+```
 
 ## Uninstall
 
