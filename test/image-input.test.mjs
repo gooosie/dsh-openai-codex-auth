@@ -40,7 +40,7 @@ function createImageHarness(t, readImageRequest, modelId) {
 	};
 }
 
-for (const modelId of ["gpt-5.5", "gpt-6-astra"]) {
+for (const modelId of ["gpt-5.5", "gpt-6-astra", "gpt-6-sol", "gpt-6-luna"]) {
 	test(`registered Codex adapter prepares image input for ${modelId}`, async (t) => {
 		const data = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a1ioAAAAASUVORK5CYII=", "base64");
 		const attachment = {
