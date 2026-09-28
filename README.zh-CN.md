@@ -23,8 +23,11 @@ adapter 注册冲突。
 ## 要求
 
 - Node.js `>=22.19.0`；
-- DSH `0.1.5-rc.2` Web profile；
+- DSH `0.1.7-rc.2` Web profile（已测试的宿主版本）；
 - 具有 Codex 使用资格并已启用设备码登录的 ChatGPT 订阅。
+
+模型来自宿主的 pi-ai 目录。DSH `0.1.7-rc.2` 自带的 pi-ai `0.85.1`
+尚不包含 GPT-6 Sol 和 GPT-6 Luna；插件不会替换宿主目录或安装另一套 provider 运行时。
 
 ## 安装或更新
 

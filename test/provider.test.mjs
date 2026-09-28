@@ -1,7 +1,14 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { createModels, getSupportedThinkingLevels } from "@earendil-works/pi-ai";
+import { openaiCodexProvider } from "@earendil-works/pi-ai/providers/openai-codex";
 import { createCodexProvider, DEFAULT_CODEX_REASONING_LEVEL } from "../lib/provider.js";
+
+test("Codex preserves every host model and its input capabilities", () => {
+	const capabilities = (models) => models.map(({ id, input }) => ({ id, input }));
+	assert.deepEqual(capabilities(createCodexProvider().getModels()),
+		capabilities(openaiCodexProvider().getModels()));
+});
 
 test("Codex models expose distinct reasoning levels only", () => {
 	const models = createCodexProvider().getModels();

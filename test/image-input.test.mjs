@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { Context } from "@deepseek-ai/cordis";
 import { OpenAICodexAuthService } from "../lib/index.js";
+import { createCodexProvider } from "../lib/provider.js";
 
 function createImageHarness(t, readImageRequest, modelId) {
 	const ctx = new Context();
@@ -42,6 +43,10 @@ function createImageHarness(t, readImageRequest, modelId) {
 
 for (const modelId of ["gpt-5.5", "gpt-6-astra", "gpt-6-sol", "gpt-6-luna"]) {
 	test(`registered Codex adapter prepares image input for ${modelId}`, async (t) => {
+		if (!createCodexProvider().getModels().some((model) => model.id === modelId)) {
+			t.skip(`${modelId} is not supplied by this host's pi-ai catalog`);
+			return;
+		}
 		const data = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a1ioAAAAASUVORK5CYII=", "base64");
 		const attachment = {
 			attachmentId: "test-image", mediaType: "image/png", bytes: data.length,
@@ -51,7 +56,7 @@ for (const modelId of ["gpt-5.5", "gpt-6-astra", "gpt-6-sol", "gpt-6-luna"]) {
 		const stream = createImageHarness(t, async (ref, policy) => {
 			imageReads++;
 			assert.equal(ref, attachment);
-			assert.deepEqual(policy, { maxPixels: 4_194_304, maxBytes: 1_048_576 });
+			assert.deepEqual(policy, { width: 1, height: 1, maxBytes: 1_048_576 });
 			return { ...ref, data, variantId: "test-variant" };
 		}, modelId);
 		const providerContext = await stream([{ role: "user", content: [
@@ -89,6 +94,17 @@ for (const scenario of [
 			? images.map((image) => ({ role: "user", content: [prompt, image] }))
 			: [{ role: "user", content: [prompt, ...images] }];
 		const original = structuredClone(messages);
+		if (scenario.kept < images.length) {
+			// DSH 0.1.7 delegates offloading to the agent loop instead of silently
+			// trimming stored image history inside the provider adapter.
+			await assert.rejects(stream(messages), (error) => {
+				assert.equal(error.code, "IMAGE_OFFLOAD_REQUIRED");
+				assert.equal(error.failure.offloadImages, images.length - scenario.kept);
+				return true;
+			});
+			assert.deepEqual(messages, original, "stored image history is not mutated");
+			return;
+		}
 		const context = await stream(messages);
 		const outputImages = context.messages.flatMap((message) =>
 			Array.isArray(message.content) ? message.content.filter((block) => block.type === "image") : []);

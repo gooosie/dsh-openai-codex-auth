@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { readFileSync } from "node:fs";
+import { runInNewContext } from "node:vm";
 import { Context } from "@deepseek-ai/cordis";
 import { remoteMethods } from "@deepseek-ai/dsh-typert-protocol";
 import { OpenAICodexRemoteService } from "../lib/remote-service.js";
@@ -40,6 +42,38 @@ test("Remote contribution exposes only the sanitized login lifecycle", () => {
 test("Remote snapshot schema rejects extra fields that could leak credentials", () => {
 	assert.deepEqual(SnapshotSchema.parse(snapshot), snapshot);
 	assert.throws(() => SnapshotSchema.parse({ ...snapshot, accessToken: "secret" }));
+});
+
+test("host result codecs expose lazy factories for DSH 0.1.7", () => {
+	for (const { result } of TYPERT.invocations) {
+		assert.equal(typeof result.create, "function");
+		assert.deepEqual(result.create().parse(snapshot), snapshot);
+		assert.throws(() => result.create().parse({ ...snapshot, accessToken: "secret" }));
+	}
+});
+
+test("browser mounts matching lazy result codecs", async () => {
+	let client;
+	let contribution;
+	runInNewContext(readFileSync(new URL("../lib/client.js", import.meta.url), "utf8"), {
+		window: { __ModuleLoader__: { load: ({ factory }) => {
+			client = factory(() => ({}));
+		} } }
+	});
+	// Stop immediately after mounting: no UI, OAuth or network activity.
+	const mounted = new Error("mounted");
+	await assert.rejects(client.apply({ remote: { $mount: async (value) => {
+		contribution = value;
+		throw mounted;
+	} } }), (error) => error === mounted);
+	assert.equal(contribution.package, TYPERT.package);
+	for (const [index, descriptor] of contribution.descriptors.entries()) {
+		assert.equal(descriptor.id, TYPERT.invocations[index].id);
+		assert.equal(descriptor.result.typeSymbol, TYPERT.invocations[index].result.typeSymbol);
+		assert.equal(typeof descriptor.result.create, "function");
+		assert.equal(descriptor.result.create().parse(snapshot), snapshot);
+		assert.throws(() => descriptor.result.create().parse({ ...snapshot, accessToken: "secret" }));
+	}
 });
 
 test("Host service marks the same three methods for Typed Remote discovery", () => {

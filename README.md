@@ -23,8 +23,12 @@ of `openai-codex` causes an adapter registration conflict.
 ## Requirements
 
 - Node.js `>=22.19.0`.
-- A DSH `0.1.5-rc.2` Web profile.
+- A DSH `0.1.7-rc.2` Web profile (the tested host version).
 - A ChatGPT subscription eligible for Codex, with device-code sign-in enabled.
+
+Models come from the host's pi-ai catalog. DSH `0.1.7-rc.2` ships pi-ai
+`0.85.1`, which does not include GPT-6 Sol or GPT-6 Luna. This plugin does not
+replace the host's model catalog or install a second provider runtime.
 
 ## Install or update
 
