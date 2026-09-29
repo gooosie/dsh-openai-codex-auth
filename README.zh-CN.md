@@ -22,17 +22,21 @@ DSH `0.2.0-rc.2` 的内置 `llm-pi-ai.providers.openai-codex` 路由也受此限
 - 在 DSH 模型选择器中提供 Codex 模型及对应推理等级；
 - 在本地保存凭据并自动刷新令牌；
 - 在设置页显示登录状态、滚动用量周期、重置时间和 Credits。
+- 显示重置卡数量和到期时间，支持选卡并确认后兑换；
+- 无需重启即可切换跟随 DSH 宿主或 Windows 手动系统代理。
 
 ## 要求
 
-- Node.js `>=22.19.0`；
-- DSH `0.2.0-rc.2` Web profile（已测试的宿主版本）；
+- DSH `0.2.0-rc.2` Web 或 Windows 桌面版（已测试的宿主版本）；
+- CLI 安装需要 Node.js `>=22.19.0`；桌面版自带运行时，无需另装；
 - 具有 Codex 使用资格并已启用设备码登录的 ChatGPT 订阅。
 
 模型来自宿主的 pi-ai 目录。DSH `0.2.0-rc.2` 自带的 pi-ai `0.87.1`
 已包含 GPT-6 Sol 和 GPT-6 Luna，实际访问权限仍取决于账号；插件不会替换宿主目录或安装另一套 provider 运行时。
 
 ## 安装或更新
+
+### CLI / Web
 
 ```sh
 dsh plugin --profile web add dsh-openai-codex-auth
@@ -41,6 +45,10 @@ dsh plugin --profile web add dsh-openai-codex-auth
 安装或更新后重启 DSH。
 
 ### Windows 桌面版
+
+在桌面版插件管理器中输入 `dsh-openai-codex-auth@0.6.0` 安装。
+管理器会安装到当前桌面版 profile 并启用 bundle，无需另外安装全局 Node.js、pnpm 或 CLI。
+如果更新后提示需要重启，请重启桌面版再检查新界面。
 
 桌面版 `0.2.0-rc.2` 内置独立的 DSH 运行时，使用 `desktop` profile。
 安装到 `web` 不会自动安装到桌面版。插件仍使用 `dsh.client.platform: web`，
@@ -51,20 +59,23 @@ dsh plugin --profile web add dsh-openai-codex-auth
 
 ```powershell
 $desktopDsh = "$env:LOCALAPPDATA\Programs\DeepSeek Harness\resources\runtime\cli\bin\dsh.cmd"
-& $desktopDsh plugin --profile desktop add dsh-openai-codex-auth
+& $desktopDsh plugin --profile desktop add dsh-openai-codex-auth@0.6.0
 ```
 
 自定义安装位置需调整路径，不要用 npm 全局安装的 `dsh` 代替该命令。
 重启桌面版后打开“设置 → OpenAI Codex”。卸载时同样先完全退出桌面版，
 再用该 CLI 执行 `plugin --profile desktop remove dsh-openai-codex-auth`。
 
-插件 `0.5.0` 面向 DSH `0.2.0-rc.2`；仍使用 DSH `0.1.7-rc.2` 的用户
+插件 `0.6.0` 面向 DSH `0.2.0-rc.2`；仍使用 DSH `0.1.7-rc.2` 的用户
 请安装插件 `0.4.2`。不要绕过兼容性检查。
 
 已验证隔离安装、桌面内置运行时及 Web 设置页/状态接口；
 原生 Electron 窗口交互、真实 OAuth 和模型请求不在自动验证范围内。
 
 ### 从源码安装
+
+以下命令针对 CLI / Web。桌面版请先完全退出，再使用自带 CLI 执行
+`plugin --profile desktop add .`。
 
 ```sh
 npm install
@@ -89,7 +100,7 @@ DSH agent 也可以调用 `codex_login`、`codex_status` 和 `codex_logout`。
 点击“使用重置额度”后需在弹窗再次确认，才会发送可能消耗所选重置卡的请求。
 具体重置哪些符合条件的额度由服务端决定；所选卡失效时不会自动改用另一张。
 结果不确定时只能重试同一次请求，请勿在其他窗口另行发起重置。
-此功能依赖非公开稳定接口，按尽力提供；兑换仅做模拟测试，未消耗真实重置卡验证。
+此功能依赖非公开接口，其兼容性不保证；兑换仅做模拟测试，未消耗真实重置卡验证。
 
 ### 网络代理
 
@@ -115,6 +126,9 @@ dsh web
 ```
 
 ## 卸载
+
+以下命令针对 CLI / Web。桌面版请通过插件管理器或上文自带 CLI 卸载；
+卸载 Web profile 中的插件不会移除桌面版中的副本。
 
 先在“设置 → OpenAI Codex”中退出登录，然后运行：
 

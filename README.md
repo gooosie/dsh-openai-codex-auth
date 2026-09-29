@@ -23,11 +23,13 @@ enabling both prevents this plugin from activating.
 - Codex models in the DSH model selector, with model-specific reasoning levels.
 - Local credential storage and automatic token refresh.
 - Login status, rolling usage windows, reset times, and Credits in Settings.
+- Reset-card counts, expiry dates, and per-card redemption with confirmation.
+- Switch between DSH transport and Windows manual system proxy without restarting.
 
 ## Requirements
 
-- Node.js `>=22.19.0`.
-- A DSH `0.2.0-rc.2` Web profile (the tested host version).
+- DSH `0.2.0-rc.2` Web or Windows Desktop (the tested host version).
+- Node.js `>=22.19.0` for CLI installations; Desktop includes its own runtime.
 - A ChatGPT subscription eligible for Codex, with device-code sign-in enabled.
 
 Models come from the host's pi-ai catalog. DSH `0.2.0-rc.2` ships pi-ai
@@ -36,6 +38,8 @@ replace the host's model catalog or install a second provider runtime.
 
 ## Install or update
 
+### CLI / Web
+
 ```sh
 dsh plugin --profile web add dsh-openai-codex-auth
 ```
@@ -43,6 +47,11 @@ dsh plugin --profile web add dsh-openai-codex-auth
 Restart DSH after installing or updating.
 
 ### Windows Desktop
+
+In Desktop's plugin manager, install `dsh-openai-codex-auth@0.6.0`.
+The manager installs into the active Desktop profile and activates the bundle;
+no separate global Node.js, pnpm, or CLI installation is needed.
+If an update requests a restart, restart Desktop before checking the new UI.
 
 Desktop `0.2.0-rc.2` carries its own DSH runtime and uses the separate `desktop`
 profile. Installing into `web` does not install into Desktop. Keep
@@ -53,7 +62,7 @@ the tray process, before using its bundled CLI from PowerShell:
 
 ```powershell
 $desktopDsh = "$env:LOCALAPPDATA\Programs\DeepSeek Harness\resources\runtime\cli\bin\dsh.cmd"
-& $desktopDsh plugin --profile desktop add dsh-openai-codex-auth
+& $desktopDsh plugin --profile desktop add dsh-openai-codex-auth@0.6.0
 ```
 
 Adjust the path for a custom installation. Do not substitute an npm-installed
@@ -61,7 +70,7 @@ Adjust the path for a custom installation. Do not substitute an npm-installed
 Use the same CLI with `plugin --profile desktop remove dsh-openai-codex-auth`
 to uninstall after fully quitting Desktop.
 
-Plugin `0.5.0` targets DSH `0.2.0-rc.2`. For DSH `0.1.7-rc.2`, use plugin
+Plugin `0.6.0` targets DSH `0.2.0-rc.2`. For DSH `0.1.7-rc.2`, use plugin
 `0.4.2` instead. Do not bypass compatibility checks.
 
 Validation covers isolated installation, the bundled Desktop runtime and Web
@@ -69,6 +78,9 @@ settings/RPC. Native Electron window interactions and real OAuth/model requests
 are not part of the automated verification.
 
 ### From source
+
+The following targets CLI / Web. For Desktop, use its bundled CLI with
+`plugin --profile desktop add .` after fully quitting the app.
 
 ```sh
 npm install
@@ -126,6 +138,9 @@ dsh web
 ```
 
 ## Uninstall
+
+The command below targets CLI / Web. For Desktop, use its plugin manager or
+the bundled CLI described above; removing the Web installation does not remove Desktop's copy.
 
 Sign out under **Settings → OpenAI Codex** first, then run:
 
