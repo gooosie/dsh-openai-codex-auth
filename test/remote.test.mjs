@@ -29,12 +29,12 @@ test("Remote contribution exposes only the sanitized login lifecycle", () => {
 	assert.deepEqual(remoteContribution.descriptors.map((entry) => entry.method), [
 		"snapshot",
 		"startLogin",
-		"logout"
+		"logout", "followHostProxy", "useSystemProxy", "consumeReset"
 	]);
 	for (const descriptor of remoteContribution.descriptors) {
 		assert.equal(descriptor.service, "openai-codex-auth");
 		assert.equal(descriptor.namespace, "openaiCodex");
-		assert.equal(descriptor.parameters.length, 0);
+		assert.equal(descriptor.parameters.length, descriptor.method === "consumeReset" ? 1 : 0);
 		assert.equal(descriptor.result.mode, "strict");
 	}
 });
@@ -71,12 +71,23 @@ test("browser mounts matching lazy result codecs", async () => {
 		assert.equal(descriptor.id, TYPERT.invocations[index].id);
 		assert.equal(descriptor.result.typeSymbol, TYPERT.invocations[index].result.typeSymbol);
 		assert.equal(typeof descriptor.result.create, "function");
+		if (descriptor.method === "consumeReset") {
+			const input = { idempotencyKey: "12345678-1234-4234-8234-123456789abc", confirmed: true, creditId: "card-1" };
+			const clientParameter = descriptor.parameters[0];
+			const hostParameter = TYPERT.invocations[index].parameters[0];
+			assert.equal(clientParameter.wire, hostParameter.wire);
+			assert.equal(clientParameter.codec.typeSymbol, hostParameter.codec.typeSymbol);
+			for (const parameter of [clientParameter, hostParameter]) {
+				assert.deepEqual(parameter.codec.create().parse(input), input);
+				assert.throws(() => parameter.codec.create().parse({ ...input, confirmed: false }));
+			}
+		}
 		assert.equal(descriptor.result.create().parse(snapshot), snapshot);
 		assert.throws(() => descriptor.result.create().parse({ ...snapshot, accessToken: "secret" }));
 	}
 });
 
-test("Host service marks the same three methods for Typed Remote discovery", () => {
+test("Host service marks matching methods for Typed Remote discovery", () => {
 	const ctx = new Context();
 	const service = new OpenAICodexRemoteService(ctx, {
 		snapshot: () => snapshot,
@@ -86,6 +97,6 @@ test("Host service marks the same three methods for Typed Remote discovery", () 
 	assert.deepEqual(remoteMethods(service).map((entry) => entry.method), [
 		"snapshot",
 		"startLogin",
-		"logout"
+		"logout", "followHostProxy", "useSystemProxy", "consumeReset"
 	]);
 });

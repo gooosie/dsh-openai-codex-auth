@@ -7,6 +7,23 @@ import { fileURLToPath } from "node:url";
 const projectRoot = dirname(dirname(fileURLToPath(import.meta.url)));
 const clientSource = readFileSync(join(projectRoot, "lib", "client.js"), "utf8");
 
+test("usage, reset credits and proxy headings share semibold region typography", () => {
+	for (const key of ["usageTitle", "resetTitle", "proxyLabel"]) {
+		assert.match(clientSource, new RegExp(`style: regionTitleStyle,\\s*children: t\\("${key}"\\)`));
+	}
+	assert.match(clientSource, /const regionTitleStyle = \{[^\n]*fontSize: "14px", fontWeight: 600, lineHeight: "22px"/);
+});
+
+test("signed-in content keeps a rounded outline and expanded connection details", () => {
+	const style = clientSource.match(/const signedInStyle = (\{[^;]+\});/)?.[1];
+	assert.ok(style);
+	assert.match(style, /border: "1px solid var\(--dsw-alias-border-l2\)"/);
+	assert.match(style, /borderRadius: "12px"/);
+	assert.match(style, /padding: "16px"/);
+	assert.match(style, /boxSizing: "border-box"/);
+	assert.doesNotMatch(clientSource, /\("details"|\("summary"/);
+});
+
 test("login polling refreshes in the background without replacing the card", () => {
 	assert.match(
 		clientSource,
@@ -34,7 +51,7 @@ test("usage limits use accessible progress bars and aligned actions", () => {
 	assert.match(clientSource, /role: "progressbar"/);
 	assert.match(clientSource, /"aria-valuenow": Number\(remaining\)/);
 	assert.match(clientSource, /style: progressTrackStyle/);
-	assert.match(clientSource, /style: actionRowStyle/);
+	assert.match(clientSource, /style: accountHeaderStyle/);
 });
 
 test("usage limits are grouped by model with subtle separators", () => {

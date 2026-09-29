@@ -39,6 +39,7 @@ const payload = {
 test("usage parser keeps only aggregate windows and credits", () => {
 	const usage = parseCodexUsage(payload, 1000000);
 	assert.deepEqual(usage, {
+		resetCredits: null,
 		limits: [
 			{ name: "Codex", usedPercent: 24.5, windowSeconds: 18000, resetAt: 1900000000000 },
 			{ name: "Codex", usedPercent: 70, windowSeconds: 604800, resetAt: 1090000 },
@@ -47,6 +48,16 @@ test("usage parser keeps only aggregate windows and credits", () => {
 		credits: { hasCredits: true, unlimited: false, balance: "12.50" }
 	});
 	assert.doesNotMatch(JSON.stringify(usage), /must-not-leave-parser/);
+});
+
+test("reset cards accept only nonnegative safe integers and never treat absence as zero", () => {
+	for (const count of [0, 2, 10]) {
+		assert.equal(parseCodexUsage({ rate_limit_reset_credits: { available_count: count, secret: "private" } }).resetCredits, count);
+	}
+	for (const count of [undefined, null, "2", -1, 1.5, Infinity, Number.MAX_SAFE_INTEGER + 1]) {
+		assert.equal(parseCodexUsage({ rate_limit_reset_credits: { available_count: count } }).resetCredits, null);
+	}
+	assert.equal(parseCodexUsage({}).resetCredits, null);
 });
 
 test("usage request sends OAuth headers and returns a sanitized summary", async () => {

@@ -1,7 +1,7 @@
 {
   "name": "dsh-openai-codex-auth",
   "description": "Unofficial OpenAI Codex provider for DeepSeek Harness with ChatGPT subscription sign-in.",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "type": "module",
   "main": "lib/index.js",
   "files": [
@@ -46,7 +46,7 @@
     }
   },
   "scripts": {
-    "check": "node --check lib/index.js && node --check lib/provider.js && node --check lib/remote-service.js && node --check lib/remote.js && node --check lib/client.js && node --check lib/usage.js",
+    "check": "node --check lib/index.js && node --check lib/provider.js && node --check lib/remote-service.js && node --check lib/remote.js && node --check lib/client.js && node --check lib/usage.js && node --check lib/system-proxy.js && node --check lib/system-proxy-worker.js && node --check lib/proxy-manager.js && node --check lib/reset-credits.js",
     "test": "node --test",
     "prepublishOnly": "npm run check && npm test"
   },
@@ -62,6 +62,7 @@
     "node": ">=22.19.0"
   },
   "dependencies": {
+    "undici": "^8.11.2",
     "zod": "^4.4.3"
   },
   "publishConfig": {
@@ -76,6 +77,7 @@
     "url": "https://github.com/gooosie/dsh-openai-codex-auth/issues"
   },
   "peerDependencies": {
+    "@deepseek-ai/schemastery": "^3.18.4",
     "@deepseek-ai/cordis": "~4.0.4",
     "@deepseek-ai/dsh-credentials": "0.2.0-rc.2",
     "@deepseek-ai/dsh-http-proxy": "0.2.0-rc.2",
@@ -86,6 +88,7 @@
     "@earendil-works/pi-ai": "0.87.1"
   },
   "devDependencies": {
+    "@deepseek-ai/schemastery": "3.18.4",
     "@deepseek-ai/cordis": "4.0.4",
     "@deepseek-ai/dsh-credentials": "0.2.0-rc.2",
     "@deepseek-ai/dsh-http-proxy": "0.2.0-rc.2",

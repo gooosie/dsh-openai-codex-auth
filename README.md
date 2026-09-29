@@ -85,12 +85,38 @@ The package is a DSH bundle, so no separate install script is required.
 
 DSH agents can also call `codex_login`, `codex_status`, and `codex_logout`.
 
+### Reset cards
+
+Below usage, the card shows the available reset count and each available Codex
+card's expiry in your local time, earliest first. Each row has its own **Use reset**
+button targeting that specific card; confirmation shows its expiry.
+Missing expiry or failed detail reads are
+shown explicitly, not as zero cards. **Use reset** opens a confirmation dialog;
+only confirming sends a request that may consume one account-wide card.
+The server determines which eligible limits reset. Uncertain results
+must be retried with the same request; do not start another reset in another window.
+This uses a private ChatGPT backend contract and is best-effort. Redemption has
+only been tested with mocks, never with real cards.
+
 ### Network proxy
 
-Model, sign-in, and usage requests use DSH's shared `fetch` transport. Configure
-`HTTPS_PROXY` / `HTTP_PROXY` / `ALL_PROXY` and `NO_PROXY` before starting DSH,
-or in `$DSH_HOME/.env`. This plugin does not read Windows system proxy settings
-or install its own global dispatcher. Restart DSH after changing proxy settings.
+Choose **Settings → OpenAI Codex → Proxy**; new requests switch immediately
+(stored as this plugin's `proxyMode` configuration):
+
+- `host` (default): follow DSH. Configure `HTTPS_PROXY` / `HTTP_PROXY` / `ALL_PROXY`
+  and `NO_PROXY` before launch, or in `$DSH_HOME/.env`.
+- `system`: use the current Windows user's manual HTTP/HTTPS system proxy and
+  bypass list for sign-in, token refresh, usage and model requests. Model requests
+  use SSE, not WebSocket. OAuth runs in an isolated Worker; host environment
+  variables and the global dispatcher are not modified.
+
+PAC, auto-discovery, SOCKS-only and proxy URLs containing credentials are not
+supported. Missing/unsupported manual HTTPS proxy settings fail closed rather
+than falling back to direct connections. Explicit system bypass entries connect
+directly. External browser authorization pages are outside this setting's scope.
+Active requests finish using their original route. Click **Reload system proxy**
+after changing Windows proxy settings. A failed change preserves the active mode.
+Changing the host's environment variables still requires restarting DSH itself.
 
 For example, in PowerShell (replace the address with your proxy):
 
@@ -113,7 +139,7 @@ Restart DSH afterward.
 
 - OAuth tokens are stored locally under `PI_OAUTH_OPENAI_CODEX` in
   `$DSH_HOME/.credentials.yaml` and are never sent to the settings page.
-- Usage data retains only aggregate percentages, reset times, and Credits.
+- Usage data retains aggregate percentages, reset times, Credits, and reset-card counts, expiry timestamps and opaque card IDs for selection.
 - Never commit or share `.credentials.yaml`, `auth.json`, or environment files.
 
 Report security issues privately according to [SECURITY.md](./SECURITY.md).

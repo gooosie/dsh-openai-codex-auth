@@ -81,12 +81,31 @@ dsh plugin --profile web add .
 
 DSH agent 也可以调用 `codex_login`、`codex_status` 和 `codex_logout`。
 
+### 重置卡
+
+用量下方展示可用重置卡数量和每张可用 Codex 重置卡的到期时间（本地时区），最近到期的排在前面。
+每行的“使用重置额度”按钮指定该张卡，确认弹窗也会显示所选卡的到期时间。
+接口未提供有效期或详情读取失败时会明确提示，不会误显示为零张。
+点击“使用重置额度”后需在弹窗再次确认，才会发送可能消耗所选重置卡的请求。
+具体重置哪些符合条件的额度由服务端决定；所选卡失效时不会自动改用另一张。
+结果不确定时只能重试同一次请求，请勿在其他窗口另行发起重置。
+此功能依赖非公开稳定接口，按尽力提供；兑换仅做模拟测试，未消耗真实重置卡验证。
+
 ### 网络代理
 
-模型、登录和用量请求统一使用 DSH 的 `fetch` 网络传输。请在启动 DSH 前配置
-`HTTPS_PROXY` / `HTTP_PROXY` / `ALL_PROXY` 和 `NO_PROXY`，或写入
-`$DSH_HOME/.env`。插件不再读取 Windows 系统代理，也不再设置全局连接管理器。
-修改代理设置后需要重启 DSH。
+在 **设置 → OpenAI Codex → 网络代理** 中选择模式，新请求立即生效，无需重启
+（底层配置字段为本插件的 `proxyMode`）：
+
+- `host`（默认）：跟随 DSH 宿主。启动前配置 `HTTPS_PROXY` / `HTTP_PROXY` /
+  `ALL_PROXY` 和 `NO_PROXY`，或写入 `$DSH_HOME/.env`。
+- `system`：读取运行 DSH 的 Windows 用户的手动 HTTP/HTTPS 系统代理及绕过列表。
+  登录、令牌刷新、用量和模型请求均使用此模式；模型对话使用 SSE，不使用 WebSocket。
+  OAuth 在独立 Worker 内运行，不修改宿主的环境变量或全局连接管理器。
+
+系统代理模式不支持 PAC、自动发现、SOCKS-only 或带用户名密码的代理地址；没有可用的
+手动 HTTPS 代理时请求会报错，不会自动回退直连。系统绕过列表匹配的地址按系统策略直连。
+此设置不控制外部浏览器中的授权页面。进行中的请求保留原连接直到结束；修改 Windows
+代理后点击“重新读取系统代理”即可，切换失败保留原模式。修改宿主的环境变量仍需重启 DSH。
 
 例如在 PowerShell 中（请替换为你的代理地址）：
 
@@ -109,7 +128,7 @@ dsh plugin --profile web remove dsh-openai-codex-auth
 
 - OAuth token 以 `PI_OAUTH_OPENAI_CODEX` 项保存在本地
   `$DSH_HOME/.credentials.yaml`，不会发送到设置页面；
-- 用量数据只保留聚合百分比、重置时间和 Credits；
+- 用量数据只保留聚合百分比、重置时间、Credits，以及重置卡数量、到期时间和选卡所需的卡片标识，不包含用户身份信息；
 - 请勿提交或分享 `.credentials.yaml`、`auth.json` 或环境变量文件。
 
 安全问题请按 [SECURITY.md](./SECURITY.md) 私下报告。
