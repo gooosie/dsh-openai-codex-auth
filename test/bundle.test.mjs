@@ -50,7 +50,7 @@ test("web client targets the DSH 0.2.0 module contract", () => {
 
 	for (const readme of ["README.md", "README.zh-CN.md"]) {
 		const text = readFileSync(join(projectRoot, readme), "utf8");
-		assert.match(text, /DSH `0\.2\.0-rc\.2` Web profile/);
+		assert.match(text, /DSH `0\.2\.0-rc\.2` Web (?:or Windows Desktop|或 Windows 桌面版)/);
 		assert.doesNotMatch(text, /0\.1\.1-rc\.2/);
 	}
 });

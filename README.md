@@ -48,7 +48,7 @@ Restart DSH after installing or updating.
 
 ### Windows Desktop
 
-In Desktop's plugin manager, install `dsh-openai-codex-auth@0.6.0`.
+In Desktop's plugin manager, install `dsh-openai-codex-auth@0.6.1`.
 The manager installs into the active Desktop profile and activates the bundle;
 no separate global Node.js, pnpm, or CLI installation is needed.
 If an update requests a restart, restart Desktop before checking the new UI.
@@ -62,7 +62,7 @@ the tray process, before using its bundled CLI from PowerShell:
 
 ```powershell
 $desktopDsh = "$env:LOCALAPPDATA\Programs\DeepSeek Harness\resources\runtime\cli\bin\dsh.cmd"
-& $desktopDsh plugin --profile desktop add dsh-openai-codex-auth@0.6.0
+& $desktopDsh plugin --profile desktop add dsh-openai-codex-auth@0.6.1
 ```
 
 Adjust the path for a custom installation. Do not substitute an npm-installed
@@ -70,7 +70,7 @@ Adjust the path for a custom installation. Do not substitute an npm-installed
 Use the same CLI with `plugin --profile desktop remove dsh-openai-codex-auth`
 to uninstall after fully quitting Desktop.
 
-Plugin `0.6.0` targets DSH `0.2.0-rc.2`. For DSH `0.1.7-rc.2`, use plugin
+Plugin `0.6.1` targets DSH `0.2.0-rc.2`. For DSH `0.1.7-rc.2`, use plugin
 `0.4.2` instead. Do not bypass compatibility checks.
 
 Validation covers isolated installation, the bundled Desktop runtime and Web

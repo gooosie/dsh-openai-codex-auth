@@ -46,7 +46,7 @@ dsh plugin --profile web add dsh-openai-codex-auth
 
 ### Windows 桌面版
 
-在桌面版插件管理器中输入 `dsh-openai-codex-auth@0.6.0` 安装。
+在桌面版插件管理器中输入 `dsh-openai-codex-auth@0.6.1` 安装。
 管理器会安装到当前桌面版 profile 并启用 bundle，无需另外安装全局 Node.js、pnpm 或 CLI。
 如果更新后提示需要重启，请重启桌面版再检查新界面。
 
@@ -59,14 +59,14 @@ dsh plugin --profile web add dsh-openai-codex-auth
 
 ```powershell
 $desktopDsh = "$env:LOCALAPPDATA\Programs\DeepSeek Harness\resources\runtime\cli\bin\dsh.cmd"
-& $desktopDsh plugin --profile desktop add dsh-openai-codex-auth@0.6.0
+& $desktopDsh plugin --profile desktop add dsh-openai-codex-auth@0.6.1
 ```
 
 自定义安装位置需调整路径，不要用 npm 全局安装的 `dsh` 代替该命令。
 重启桌面版后打开“设置 → OpenAI Codex”。卸载时同样先完全退出桌面版，
 再用该 CLI 执行 `plugin --profile desktop remove dsh-openai-codex-auth`。
 
-插件 `0.6.0` 面向 DSH `0.2.0-rc.2`；仍使用 DSH `0.1.7-rc.2` 的用户
+插件 `0.6.1` 面向 DSH `0.2.0-rc.2`；仍使用 DSH `0.1.7-rc.2` 的用户
 请安装插件 `0.4.2`。不要绕过兼容性检查。
 
 已验证隔离安装、桌面内置运行时及 Web 设置页/状态接口；
