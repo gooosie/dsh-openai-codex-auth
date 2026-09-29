@@ -31,14 +31,14 @@ test("web client uses the Typed Remote gateway instead of settings allowlists", 
 	assert.match(client, /ctx\.remote\.\$mount\(REMOTE_CONTRIBUTION\)/);
 });
 
-test("web client targets the DSH 0.1.7 module contract", () => {
+test("web client targets the DSH 0.2.0 module contract", () => {
 	const dshPeers = Object.entries(packageJson.peerDependencies)
 		.filter(([name]) => name.startsWith("@deepseek-ai/dsh-"));
 	for (const [name, range] of dshPeers) {
-		assert.equal(range, "0.1.7-rc.2", `${name} must match the tested DSH release`);
+		assert.equal(range, "0.2.0-rc.2", `${name} must match the tested DSH release`);
 	}
 	assert.equal(packageJson.peerDependencies["@deepseek-ai/cordis"], "~4.0.4");
-	assert.equal(packageJson.peerDependencies["@earendil-works/pi-ai"], "0.85.1");
+	assert.equal(packageJson.peerDependencies["@earendil-works/pi-ai"], "0.87.1");
 	assert.equal(packageJson.dsh.client.inject.includes("@deepseek-ai/dsh-client-runtime"), false);
 	assert.equal("@deepseek-ai/dsh-client-web-react" in packageJson.peerDependencies, false);
 
@@ -50,7 +50,7 @@ test("web client targets the DSH 0.1.7 module contract", () => {
 
 	for (const readme of ["README.md", "README.zh-CN.md"]) {
 		const text = readFileSync(join(projectRoot, readme), "utf8");
-		assert.match(text, /DSH `0\.1\.7-rc\.2` Web profile/);
+		assert.match(text, /DSH `0\.2\.0-rc\.2` Web profile/);
 		assert.doesNotMatch(text, /0\.1\.1-rc\.2/);
 	}
 });
