@@ -15,6 +15,7 @@ const snapshot = {
 	expiresAt: 0,
 	error: "",
 	usageStatus: "idle",
+	usageLimited: false,
 	usageLimits: [],
 	usageCredits: "",
 	usageCreditsUnlimited: false,
