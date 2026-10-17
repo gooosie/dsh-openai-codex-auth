@@ -31,14 +31,14 @@ test("web client uses the Typed Remote gateway instead of settings allowlists", 
 	assert.match(client, /ctx\.remote\.\$mount\(REMOTE_CONTRIBUTION\)/);
 });
 
-test("web client targets the DSH 0.2.0 module contract", () => {
+test("web client targets the tested DSH 0.2.0 and 0.2.1 module contracts", () => {
 	const dshPeers = Object.entries(packageJson.peerDependencies)
 		.filter(([name]) => name.startsWith("@deepseek-ai/dsh-"));
 	for (const [name, range] of dshPeers) {
-		assert.equal(range, "0.2.0-rc.2", `${name} must match the tested DSH release`);
+		assert.equal(range, "0.2.0-rc.2 || 0.2.1-rc.2", `${name} must match the tested DSH releases`);
 	}
 	assert.equal(packageJson.peerDependencies["@deepseek-ai/cordis"], "~4.0.4");
-	assert.equal(packageJson.peerDependencies["@earendil-works/pi-ai"], "0.87.1");
+	assert.equal(packageJson.peerDependencies["@earendil-works/pi-ai"], "0.87.1 || 1.1.0");
 	assert.equal(packageJson.dsh.client.inject.includes("@deepseek-ai/dsh-client-runtime"), false);
 	assert.equal("@deepseek-ai/dsh-client-web-react" in packageJson.peerDependencies, false);
 

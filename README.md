@@ -29,6 +29,7 @@ enabling both prevents this plugin from activating.
 ## Requirements
 
 - DSH `0.2.0-rc.2` Web or Windows Desktop (the tested host version).
+  Also supports DSH `0.2.1-rc.2` with host pi-ai `1.1.0`.
 - Node.js `>=22.19.0` for CLI installations; Desktop includes its own runtime.
 - A ChatGPT subscription eligible for Codex, with device-code sign-in enabled.
 
@@ -48,7 +49,7 @@ Restart DSH after installing or updating.
 
 ### Windows Desktop
 
-In Desktop's plugin manager, install `dsh-openai-codex-auth@0.6.2`.
+In Desktop's plugin manager, install `dsh-openai-codex-auth@0.6.3`.
 The manager installs into the active Desktop profile and activates the bundle;
 no separate global Node.js, pnpm, or CLI installation is needed.
 If an update requests a restart, restart Desktop before checking the new UI.
@@ -57,12 +58,14 @@ Desktop `0.2.0-rc.2` carries its own DSH runtime and uses the separate `desktop`
 profile. Installing into `web` does not install into Desktop. Keep
 `dsh.client.platform: web`: Desktop renders the same Web plugin UI.
 
+The following CLI alternative applies only to Desktop `0.2.0-rc.2`;
+`0.2.1-rc.2` reserves the Desktop profile for the app, so use its plugin manager.
 Open Desktop once to initialize its profile, then **fully quit it**, including
 the tray process, before using its bundled CLI from PowerShell:
 
 ```powershell
 $desktopDsh = "$env:LOCALAPPDATA\Programs\DeepSeek Harness\resources\runtime\cli\bin\dsh.cmd"
-& $desktopDsh plugin --profile desktop add dsh-openai-codex-auth@0.6.2
+& $desktopDsh plugin --profile desktop add dsh-openai-codex-auth@0.6.3
 ```
 
 Adjust the path for a custom installation. Do not substitute an npm-installed
@@ -70,7 +73,7 @@ Adjust the path for a custom installation. Do not substitute an npm-installed
 Use the same CLI with `plugin --profile desktop remove dsh-openai-codex-auth`
 to uninstall after fully quitting Desktop.
 
-Plugin `0.6.2` targets DSH `0.2.0-rc.2`. For DSH `0.1.7-rc.2`, use plugin
+Plugin `0.6.3` supports DSH `0.2.0-rc.2` and `0.2.1-rc.2`. For DSH `0.1.7-rc.2`, use plugin
 `0.4.2` instead. Do not bypass compatibility checks.
 
 Validation covers isolated installation, the bundled Desktop runtime and Web
