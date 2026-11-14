@@ -35,7 +35,7 @@ test("web client targets the tested DSH 0.2.0, 0.2.1 and 0.2.2 module contracts"
 	const dshPeers = Object.entries(packageJson.peerDependencies)
 		.filter(([name]) => name.startsWith("@deepseek-ai/dsh-"));
 	for (const [name, range] of dshPeers) {
-		assert.equal(range, "0.2.0-rc.2 || 0.2.1-rc.2 || 0.2.1-rc.5 || 0.2.2-rc.1", `${name} must match the tested DSH releases`);
+		assert.equal(range, "0.2.0-rc.2 || 0.2.1-rc.2 || 0.2.1-rc.5 || >=0.2.2-rc.1 <0.2.3-0", `${name} must bound support to the DSH 0.2.2 release line`);
 	}
 	assert.equal(packageJson.peerDependencies["@deepseek-ai/cordis"], "~4.0.4 || ~4.1.0");
 	assert.equal(packageJson.peerDependencies["@earendil-works/pi-ai"], "0.87.1 || 1.1.0 || 1.3.0 || 1.4.0 || 1.5.0");
@@ -53,6 +53,7 @@ test("web client targets the tested DSH 0.2.0, 0.2.1 and 0.2.2 module contracts"
 		assert.match(text, /DSH `0\.2\.0-rc\.2` Web (?:or Windows Desktop|或 Windows 桌面版)/);
 		assert.match(text, /DSH `0\.2\.1-rc\.5` Web/);
 		assert.match(text, /DSH `0\.2\.2-rc\.1` Web/);
+		assert.match(text, /`0\.2\.2-rc\.3`/);
 		assert.doesNotMatch(text, /0\.1\.1-rc\.2/);
 	}
 });

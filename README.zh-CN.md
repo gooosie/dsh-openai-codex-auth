@@ -30,7 +30,10 @@ DSH `0.2.0-rc.2` 的内置 `llm-pi-ai.providers.openai-codex` 路由也受此限
 - DSH `0.2.0-rc.2` Web 或 Windows 桌面版（已测试的宿主版本）；
   同时支持 DSH `0.2.1-rc.2` 和宿主提供的 pi-ai `1.1.0` 或 `1.3.0`，
   DSH `0.2.1-rc.5` Web 和宿主提供的 pi-ai `1.4.0`，
-  以及 DSH `0.2.2-rc.1` Web、宿主 Cordis `4.1.0` 和 pi-ai `1.5.0`。
+  DSH `0.2.2-rc.1` Web、宿主 Cordis `4.1.0` 和 pi-ai `1.5.0`，
+  以及 Windows 桌面版 `0.2.2-rc.3` 和宿主 pi-ai `1.3.0`。
+  DSH `0.2.2` 的兼容范围接受从 `rc.1` 开始的后续 RC 和 `0.2.2` 正式版；
+  `0.2.3` 及更高版本需要重新检查兼容性。声明允许未来 RC 加载，不代表已测试这些版本。
 - CLI 安装需要 Node.js `>=22.19.0`；桌面版自带运行时，无需另装；
 - 具有 Codex 使用资格并已启用设备码登录的 ChatGPT 订阅。
 
@@ -49,7 +52,7 @@ dsh plugin --profile web add dsh-openai-codex-auth
 
 ### Windows 桌面版
 
-在桌面版插件管理器中输入 `dsh-openai-codex-auth@0.6.5` 安装。
+在桌面版插件管理器中输入 `dsh-openai-codex-auth@0.6.6` 安装。
 管理器会安装到当前桌面版 profile 并启用 bundle，无需另外安装全局 Node.js、pnpm 或 CLI。
 如果更新后提示需要重启，请重启桌面版再检查新界面。
 
@@ -64,14 +67,14 @@ dsh plugin --profile web add dsh-openai-codex-auth
 
 ```powershell
 $desktopDsh = "$env:LOCALAPPDATA\Programs\DeepSeek Harness\resources\runtime\cli\bin\dsh.cmd"
-& $desktopDsh plugin --profile desktop add dsh-openai-codex-auth@0.6.5
+& $desktopDsh plugin --profile desktop add dsh-openai-codex-auth@0.6.6
 ```
 
 自定义安装位置需调整路径，不要用 npm 全局安装的 `dsh` 代替该命令。
 重启桌面版后打开“设置 → OpenAI Codex”。卸载时同样先完全退出桌面版，
 再用该 CLI 执行 `plugin --profile desktop remove dsh-openai-codex-auth`。
 
-插件 `0.6.5` 支持 DSH `0.2.0-rc.2`、`0.2.1-rc.2`、`0.2.1-rc.5` 和 `0.2.2-rc.1`；仍使用 DSH `0.1.7-rc.2` 的用户
+插件 `0.6.6` 支持 DSH `0.2.0-rc.2`、`0.2.1-rc.2`、`0.2.1-rc.5` 和 `>=0.2.2-rc.1 <0.2.3-0` 范围；仍使用 DSH `0.1.7-rc.2` 的用户
 请安装插件 `0.4.2`。不要绕过兼容性检查。
 
 已验证隔离安装、桌面内置运行时及 Web 设置页/状态接口；
