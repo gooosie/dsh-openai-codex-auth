@@ -38,7 +38,7 @@ test("web client targets the tested DSH 0.2.0, 0.2.1 and 0.2.2 module contracts"
 		assert.equal(range, "0.2.0-rc.2 || 0.2.1-rc.2 || 0.2.1-rc.5 || >=0.2.2-rc.1 <0.2.3-0", `${name} must bound support to the DSH 0.2.2 release line`);
 	}
 	assert.equal(packageJson.peerDependencies["@deepseek-ai/cordis"], "~4.0.4 || ~4.1.0");
-	assert.equal(packageJson.peerDependencies["@earendil-works/pi-ai"], "0.87.1 || 1.1.0 || 1.3.0 || 1.4.0 || 1.5.0");
+	assert.equal(packageJson.peerDependencies["@earendil-works/pi-ai"], "0.87.1 || 1.1.0 || 1.3.0 || 1.4.0 || >=1.5.0 <1.6.0");
 	assert.equal(packageJson.dsh.client.inject.includes("@deepseek-ai/dsh-client-runtime"), false);
 	assert.equal("@deepseek-ai/dsh-client-web-react" in packageJson.peerDependencies, false);
 

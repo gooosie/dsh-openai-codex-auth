@@ -32,10 +32,13 @@ enabling both prevents this plugin from activating.
   Also supports DSH `0.2.1-rc.2` with host pi-ai `1.1.0` or `1.3.0`,
   DSH `0.2.1-rc.5` Web with host pi-ai `1.4.0`,
   DSH `0.2.2-rc.1` Web with host Cordis `4.1.0` and pi-ai `1.5.0`,
-  and Windows Desktop `0.2.2-rc.3` with host pi-ai `1.3.0`.
+  Windows Desktop `0.2.2-rc.3` with host pi-ai `1.3.0`,
+  and DSH `0.2.2-rc.5` Web with host pi-ai `1.5.2`.
   The DSH `0.2.2` range accepts RCs from `rc.1` and the final `0.2.2` release;
   DSH `0.2.3` and later require another compatibility review. Future RCs are
   allowed by the manifest but are not automatically considered tested.
+  The pi-ai `1.5` range accepts stable patch releases (`>=1.5.0 <1.6.0`);
+  `1.5.0` and `1.5.2` have been tested. Other supported pi-ai versions remain exact.
 - Node.js `>=22.19.0` for CLI installations; Desktop includes its own runtime.
 - A ChatGPT subscription eligible for Codex, with device-code sign-in enabled.
 
@@ -55,7 +58,7 @@ Restart DSH after installing or updating.
 
 ### Windows Desktop
 
-In Desktop's plugin manager, install `dsh-openai-codex-auth@0.6.6`.
+In Desktop's plugin manager, install `dsh-openai-codex-auth@0.6.7`.
 The manager installs into the active Desktop profile and activates the bundle;
 no separate global Node.js, pnpm, or CLI installation is needed.
 If an update requests a restart, restart Desktop before checking the new UI.
@@ -71,7 +74,7 @@ the tray process, before using its bundled CLI from PowerShell:
 
 ```powershell
 $desktopDsh = "$env:LOCALAPPDATA\Programs\DeepSeek Harness\resources\runtime\cli\bin\dsh.cmd"
-& $desktopDsh plugin --profile desktop add dsh-openai-codex-auth@0.6.6
+& $desktopDsh plugin --profile desktop add dsh-openai-codex-auth@0.6.7
 ```
 
 Adjust the path for a custom installation. Do not substitute an npm-installed
@@ -79,7 +82,7 @@ Adjust the path for a custom installation. Do not substitute an npm-installed
 Use the same CLI with `plugin --profile desktop remove dsh-openai-codex-auth`
 to uninstall after fully quitting Desktop.
 
-Plugin `0.6.6` supports DSH `0.2.0-rc.2`, `0.2.1-rc.2`, `0.2.1-rc.5`, and the `>=0.2.2-rc.1 <0.2.3-0` range. For DSH `0.1.7-rc.2`, use plugin
+Plugin `0.6.7` supports DSH `0.2.0-rc.2`, `0.2.1-rc.2`, `0.2.1-rc.5`, and the `>=0.2.2-rc.1 <0.2.3-0` range. For DSH `0.1.7-rc.2`, use plugin
 `0.4.2` instead. Do not bypass compatibility checks.
 
 Validation covers isolated installation, the bundled Desktop runtime and Web
