@@ -43,13 +43,13 @@ test("login card uses concise copy and provides a device-code copy action", () =
 test("logged-in card displays Codex usage returned by the host snapshot", () => {
 	assert.match(clientSource, /usageStatus !== "loading"/);
 	assert.match(clientSource, /usageTitle: "Codex 用量"/);
-	assert.match(clientSource, /remaining: "剩余"/);
+	assert.match(clientSource, /remaining: "剩余 \{percent\}"/);
 	assert.match(clientSource, /usageStatus === "error"/);
 });
 
 test("usage limits use accessible progress bars and aligned actions", () => {
 	assert.match(clientSource, /role: "progressbar"/);
-	assert.match(clientSource, /"aria-valuenow": Number\(remaining\)/);
+	assert.match(clientSource, /"aria-valuenow": remaining/);
 	assert.match(clientSource, /style: progressTrackStyle/);
 	assert.match(clientSource, /style: accountHeaderStyle/);
 });
@@ -62,12 +62,6 @@ test("usage limits are grouped by model with subtle separators", () => {
 	assert.match(clientSource, /separated: index > 0/);
 	assert.match(clientSource, /usageGroupSeparatedStyle = \{ borderTop: "1px solid var\(--dsw-alias-border-l2\)"/);
 	assert.match(clientSource, /children: windowLabel/);
-});
-
-test("weekly usage is described as an exact seven-day window", () => {
-	assert.match(clientSource, /return `\$\{seconds \/ 86400\} \$\{t\("days"\)\}`/);
-	assert.match(clientSource, /days: "天"/);
-	assert.doesNotMatch(clientSource, /weekly:|每周/);
 });
 
 test("usage refreshes automatically without a persistent refresh button", () => {

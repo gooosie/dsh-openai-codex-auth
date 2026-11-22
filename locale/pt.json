@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "title": "Login no OpenAI Codex",
+    "description": "Entre com o ChatGPT para usar o OpenAI Codex no DSH."
+  },
+  "tools": {
+    "loginStarted": "O login no OpenAI Codex com o ChatGPT foi iniciado.",
+    "deviceCode": "Código do dispositivo: {code}",
+    "verificationUrl": "URL de verificação: {url}",
+    "loginInstructions": "Peça ao usuário para abrir a URL de verificação e inserir o código do dispositivo. Após a autorização, chame codex_status para confirmar o login.",
+    "loginStartFailed": "Não foi possível iniciar o login. {reason}",
+    "loginTimedOut": "O tempo de espera pelo código do dispositivo se esgotou. Tente entrar novamente.",
+    "loginWaiting": "Login em andamento.",
+    "notAvailable": "(ainda não disponível)",
+    "checkStatus": "Peça ao usuário para concluir a autorização e verifique o status novamente.",
+    "previousLoginFailed": "A última tentativa de login falhou. {reason}",
+    "notLoggedIn": "Você saiu da conta. Chame codex_login para entrar com o ChatGPT.",
+    "loggedIn": "Conectado ao ChatGPT.",
+    "signInExpires": "O token expira em {date} e é renovado automaticamente.",
+    "signedOut": "Você saiu do ChatGPT.",
+    "logoutFailed": "Não foi possível remover a credencial local do OpenAI Codex. Tente sair da conta novamente.",
+    "providerNotSignedIn": "Você não está conectado ao OpenAI Codex. Abra Configurações → OpenAI Codex e entre.",
+    "loginFailed": "Não foi possível concluir o login no OpenAI Codex. Tente novamente.",
+    "refreshSignInFailed": "Não foi possível renovar a sessão do OpenAI Codex. Entre novamente.",
+    "verificationUrlMissing": "A OpenAI não retornou uma URL de verificação do dispositivo.",
+    "verificationUrlInvalid": "A OpenAI retornou uma URL de verificação do dispositivo inválida.",
+    "verificationUrlUntrusted": "A URL de verificação do dispositivo não pertence ao serviço de login da OpenAI.",
+    "proxyUnavailable": "O proxy HTTP/HTTPS manual do Windows está indisponível. Configure um proxy manual ou use as configurações do DSH."
+  }
+}

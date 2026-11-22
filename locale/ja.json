@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "title": "OpenAI Codex へのサインイン",
+    "description": "ChatGPT アカウントでサインインし、DSH で OpenAI Codex を利用できます。"
+  },
+  "tools": {
+    "loginStarted": "ChatGPT アカウントでの OpenAI Codex へのサインインを開始しました。",
+    "deviceCode": "デバイスコード: {code}",
+    "verificationUrl": "確認 URL: {url}",
+    "loginInstructions": "確認 URL を開き、デバイスコードを入力するようユーザーに案内してください。承認後、codex_status を呼び出してサインインを確認してください。",
+    "loginStartFailed": "サインインを開始できませんでした。{reason}",
+    "loginTimedOut": "デバイスコードの取得がタイムアウトしました。もう一度サインインしてください。",
+    "loginWaiting": "サインイン中です。",
+    "notAvailable": "（まだ取得できていません）",
+    "checkStatus": "ユーザーに承認を完了してもらい、再度確認してください。",
+    "previousLoginFailed": "前回のサインインに失敗しました。{reason}",
+    "notLoggedIn": "サインインしていません。codex_login を呼び出して ChatGPT アカウントでサインインしてください。",
+    "loggedIn": "ChatGPT にサインインしています。",
+    "signInExpires": "トークンの有効期限は {date} です。有効期限になると自動的に更新されます。",
+    "signedOut": "ChatGPT からサインアウトしました。",
+    "logoutFailed": "ローカルの OpenAI Codex 認証情報を削除できませんでした。もう一度サインアウトしてください。",
+    "providerNotSignedIn": "OpenAI Codex にサインインしていません。「設定 → OpenAI Codex」を開いてサインインしてください。",
+    "loginFailed": "OpenAI Codex へのサインインを完了できませんでした。もう一度お試しください。",
+    "refreshSignInFailed": "OpenAI Codex のサインインを更新できませんでした。再度サインインしてください。",
+    "verificationUrlMissing": "OpenAI からデバイス確認用の URL が返されませんでした。",
+    "verificationUrlInvalid": "OpenAI から無効なデバイス確認用 URL が返されました。",
+    "verificationUrlUntrusted": "デバイス確認用の URL が OpenAI のサインインサービスに属していません。",
+    "proxyUnavailable": "Windows の手動 HTTP/HTTPS プロキシを利用できません。手動プロキシを構成するか、DSH の設定に従ってください。"
+  }
+}

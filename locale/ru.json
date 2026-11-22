@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "title": "Вход в OpenAI Codex",
+    "description": "Войдите через ChatGPT, чтобы использовать OpenAI Codex в DSH."
+  },
+  "tools": {
+    "loginStarted": "Начат вход в OpenAI Codex через ChatGPT.",
+    "deviceCode": "Код устройства: {code}",
+    "verificationUrl": "URL подтверждения: {url}",
+    "loginInstructions": "Попросите пользователя открыть URL подтверждения и ввести код устройства. После авторизации вызовите codex_status, чтобы подтвердить вход.",
+    "loginStartFailed": "Не удалось начать вход. {reason}",
+    "loginTimedOut": "Время ожидания кода устройства истекло. Попробуйте войти снова.",
+    "loginWaiting": "Выполняется вход.",
+    "notAvailable": "(пока недоступно)",
+    "checkStatus": "Попросите пользователя завершить авторизацию, затем проверьте статус ещё раз.",
+    "previousLoginFailed": "Последняя попытка входа завершилась ошибкой. {reason}",
+    "notLoggedIn": "Вход не выполнен. Вызовите codex_login, чтобы войти через ChatGPT.",
+    "loggedIn": "Вход в ChatGPT выполнен.",
+    "signInExpires": "Срок действия токена истекает {date}. Токен обновится автоматически.",
+    "signedOut": "Вы вышли из ChatGPT.",
+    "logoutFailed": "Не удалось удалить локальные учётные данные OpenAI Codex. Попробуйте выйти снова.",
+    "providerNotSignedIn": "Вы не вошли в OpenAI Codex. Откройте Настройки → OpenAI Codex и войдите.",
+    "loginFailed": "Не удалось завершить вход в OpenAI Codex. Попробуйте ещё раз.",
+    "refreshSignInFailed": "Не удалось обновить сеанс OpenAI Codex. Войдите снова.",
+    "verificationUrlMissing": "OpenAI не предоставил URL для подтверждения устройства.",
+    "verificationUrlInvalid": "OpenAI предоставил недействительный URL для подтверждения устройства.",
+    "verificationUrlUntrusted": "URL для подтверждения устройства не принадлежит службе входа OpenAI.",
+    "proxyUnavailable": "Настроенный вручную HTTP/HTTPS-прокси Windows недоступен. Настройте прокси вручную или используйте настройки DSH."
+  }
+}

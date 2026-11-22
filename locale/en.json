@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "title": "OpenAI Codex Sign-in",
+    "description": "Sign in with ChatGPT and use OpenAI Codex in DSH."
+  },
+  "tools": {
+    "loginStarted": "ChatGPT sign-in for OpenAI Codex has started.",
+    "deviceCode": "Device code: {code}",
+    "verificationUrl": "Verification URL: {url}",
+    "loginInstructions": "Ask the user to open the verification URL and enter the device code. After authorization, call codex_status to confirm sign-in.",
+    "loginStartFailed": "Could not start sign-in. {reason}",
+    "loginTimedOut": "The device code took too long to arrive. Try signing in again.",
+    "loginWaiting": "Sign-in is in progress.",
+    "notAvailable": "(not yet available)",
+    "checkStatus": "Ask the user to complete authorization, then check again.",
+    "previousLoginFailed": "The last sign-in failed. {reason}",
+    "notLoggedIn": "You are signed out. Call codex_login to sign in with ChatGPT.",
+    "loggedIn": "Signed in to ChatGPT.",
+    "signInExpires": "The token expires at {date} and refreshes automatically.",
+    "signedOut": "Signed out of ChatGPT.",
+    "logoutFailed": "Could not clear the local OpenAI Codex credential. Try signing out again.",
+    "providerNotSignedIn": "OpenAI Codex is signed out. Open Settings → OpenAI Codex and sign in.",
+    "loginFailed": "Could not complete OpenAI Codex sign-in. Try again.",
+    "refreshSignInFailed": "Could not refresh your OpenAI Codex sign-in. Try signing in again.",
+    "verificationUrlMissing": "OpenAI did not return a device verification URL.",
+    "verificationUrlInvalid": "OpenAI returned an invalid device verification URL.",
+    "verificationUrlUntrusted": "The device verification URL is outside OpenAI’s sign-in service.",
+    "proxyUnavailable": "The Windows manual HTTP/HTTPS proxy is unavailable. Configure a manual proxy or follow DSH’s proxy settings."
+  }
+}

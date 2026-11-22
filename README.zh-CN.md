@@ -6,11 +6,7 @@
 `openai-codex` 模型提供方，通过符合资格的 ChatGPT 订阅登录，无需配置 OpenAI
 Platform API Key。
 
-一个 LLM provider 路由应当只由一个插件负责。同时启用两个 `openai-codex` 实现会造成
-adapter 注册冲突。
-
-DSH `0.2.0-rc.2` 的内置 `llm-pi-ai.providers.openai-codex` 路由也受此限制：
-使用本插件时不要同时配置该内置路由。共存尚不支持，同时启用会导致插件无法激活。
+如果当前配置启用了内置 `llm-pi-ai.providers.openai-codex` 路由，请先停用该路由，再启用本插件，避免提供方注册冲突。
 
 <p align="center">
   <img src="./docs/assets/openai-codex-settings-zh.png" alt="OpenAI Codex 中文设置页" width="760">
@@ -27,21 +23,13 @@ DSH `0.2.0-rc.2` 的内置 `llm-pi-ai.providers.openai-codex` 路由也受此限
 
 ## 要求
 
-- DSH `0.2.0-rc.2` Web 或 Windows 桌面版（已测试的宿主版本）；
-  同时支持 DSH `0.2.1-rc.2` 和宿主提供的 pi-ai `1.1.0` 或 `1.3.0`，
-  DSH `0.2.1-rc.5` Web 和宿主提供的 pi-ai `1.4.0`，
-  DSH `0.2.2-rc.1` Web、宿主 Cordis `4.1.0` 和 pi-ai `1.5.0`，
-  Windows 桌面版 `0.2.2-rc.3` 和宿主 pi-ai `1.3.0`，
-  以及 DSH `0.2.2-rc.5` Web 和宿主 pi-ai `1.5.2`。
-  DSH `0.2.2` 的兼容范围接受从 `rc.1` 开始的后续 RC 和 `0.2.2` 正式版；
-  `0.2.3` 及更高版本需要重新检查兼容性。声明允许未来 RC 加载，不代表已测试这些版本。
-  pi-ai `1.5` 使用补丁版本范围 `>=1.5.0 <1.6.0`，已测试 `1.5.0` 和 `1.5.2`；
-  其他受支持的 pi-ai 版本仍使用精确声明。
-- CLI 安装需要 Node.js `>=22.19.0`；桌面版自带运行时，无需另装；
+- DSH `0.2.0-rc.2`、`0.2.1-rc.2`、`0.2.1-rc.5` 或 `>=0.2.2-rc.1 <0.2.3-0`。
+  Cordis 和 pi-ai 的兼容版本见 [package.json](./package.json)。
+- CLI 安装需要 Node.js `>=22.19.0`。桌面版自带运行时。
 - 具有 Codex 使用资格并已启用设备码登录的 ChatGPT 订阅。
 
-模型来自宿主的 pi-ai 目录。DSH `0.2.0-rc.2` 自带的 pi-ai `0.87.1`
-已包含 GPT-6 Sol 和 GPT-6 Luna，实际访问权限仍取决于账号；插件不会替换宿主目录或安装另一套 provider 运行时。
+可用模型取决于宿主的 pi-ai 目录和账号权限。Web 设置页已在 DSH `0.2.2-rc.5` 验证，
+桌面版已验证 `0.2.2-rc.3` 的内置运行时。
 
 ## 安装或更新
 
@@ -55,45 +43,19 @@ dsh plugin --profile web add dsh-openai-codex-auth
 
 ### Windows 桌面版
 
-在桌面版插件管理器中输入 `dsh-openai-codex-auth@0.6.7` 安装。
-管理器会安装到当前桌面版 profile 并启用 bundle，无需另外安装全局 Node.js、pnpm 或 CLI。
-如果更新后提示需要重启，请重启桌面版再检查新界面。
-
-桌面版 `0.2.0-rc.2` 内置独立的 DSH 运行时，使用 `desktop` profile。
-安装到 `web` 不会自动安装到桌面版。插件仍使用 `dsh.client.platform: web`，
-因为桌面版复用 Web 插件界面。
-
-以下 CLI 方式仅适用于桌面版 `0.2.0-rc.2`；`0.2.1-rc.2` 的 desktop profile
-由桌面应用专属管理，请使用应用内插件管理器。
-先打开一次桌面版以初始化 profile，再**完全退出（包括托盘进程）**，
-然后在 PowerShell 中调用桌面版自带 CLI：
-
-```powershell
-$desktopDsh = "$env:LOCALAPPDATA\Programs\DeepSeek Harness\resources\runtime\cli\bin\dsh.cmd"
-& $desktopDsh plugin --profile desktop add dsh-openai-codex-auth@0.6.7
-```
-
-自定义安装位置需调整路径，不要用 npm 全局安装的 `dsh` 代替该命令。
-重启桌面版后打开“设置 → OpenAI Codex”。卸载时同样先完全退出桌面版，
-再用该 CLI 执行 `plugin --profile desktop remove dsh-openai-codex-auth`。
-
-插件 `0.6.7` 支持 DSH `0.2.0-rc.2`、`0.2.1-rc.2`、`0.2.1-rc.5` 和 `>=0.2.2-rc.1 <0.2.3-0` 范围；仍使用 DSH `0.1.7-rc.2` 的用户
-请安装插件 `0.4.2`。不要绕过兼容性检查。
-
-已验证隔离安装、桌面内置运行时及 Web 设置页/状态接口；
-原生 Electron 窗口交互、真实 OAuth 和模型请求不在自动验证范围内。
+通过桌面版插件管理器，在当前桌面版配置中安装或更新 `dsh-openai-codex-auth`。
+如果应用提示重启，请重启桌面版。
 
 ### 从源码安装
 
-以下命令针对 CLI / Web。桌面版请先完全退出，再使用自带 CLI 执行
-`plugin --profile desktop add .`。
+CLI / Web 用户可在仓库根目录运行以下命令。
 
 ```sh
 npm install
 dsh plugin --profile web add .
 ```
 
-这个包本身就是 DSH bundle，不需要再执行安装脚本。
+桌面版用户可在插件管理器的「添加插件」对话框中输入本仓库的绝对路径。
 
 ## 使用
 
@@ -101,7 +63,10 @@ dsh plugin --profile web add .
 2. 打开验证页面，输入显示的设备码并完成授权；
 3. 在模型选择器的“OpenAI Codex”下选择模型。
 
-DSH agent 也可以调用 `codex_login`、`codex_status` 和 `codex_logout`。
+设置页跟随 DSH 的界面语言，提供英语、简体中文、日语、西班牙语、法语、德语、俄语和巴西葡萄牙语。
+
+DSH agent 可以调用 `codex_login`、`codex_status` 和 `codex_logout`。工具输出使用 DSH 保存的语言偏好。
+未保存偏好时使用宿主系统语言，遇到未支持的语言时使用英语。
 
 ### 重置卡
 
@@ -138,16 +103,44 @@ dsh web
 
 ## 卸载
 
-以下命令针对 CLI / Web。桌面版请通过插件管理器或上文自带 CLI 卸载；
-卸载 Web profile 中的插件不会移除桌面版中的副本。
+先在要卸载插件的配置中打开「设置 → OpenAI Codex」并退出登录。
 
-先在“设置 → OpenAI Codex”中退出登录，然后运行：
+Windows 桌面版用户可在应用内的插件管理器中卸载 `dsh-openai-codex-auth`，并按提示重启。
+
+CLI / Web 用户运行以下命令，然后重启 DSH。
 
 ```sh
 dsh plugin --profile web remove dsh-openai-codex-auth
 ```
 
-最后重启 DSH。
+## 旧版说明
+
+DSH `0.1.7-rc.2` 用户请安装 `dsh-openai-codex-auth@0.4.2`。
+
+### Windows 桌面版 `0.2.0-rc.2`
+
+这个版本也可以使用桌面版自带的 CLI。先打开一次桌面版以初始化配置。如果要卸载，请先在设置中退出登录。
+然后**完全退出桌面版**，包括托盘进程。在 PowerShell 中设置自带 CLI 的路径，自定义安装时请调整路径。
+
+```powershell
+$desktopDsh = "$env:LOCALAPPDATA\Programs\DeepSeek Harness\resources\runtime\cli\bin\dsh.cmd"
+```
+
+安装时运行以下命令。
+
+```powershell
+& $desktopDsh plugin --profile desktop add dsh-openai-codex-auth@0.6.7
+```
+
+如果要在这个版本中从源码安装，请在仓库根目录运行同一安装命令，并将包名替换为 `.`。
+
+卸载时使用同一个自带 CLI 运行以下命令。
+
+```powershell
+& $desktopDsh plugin --profile desktop remove dsh-openai-codex-auth
+```
+
+安装或卸载完成后，重新打开桌面版。
 
 ## 安全
 

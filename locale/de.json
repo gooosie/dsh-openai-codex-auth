@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "title": "Anmeldung bei OpenAI Codex",
+    "description": "Melde dich mit ChatGPT an und nutze OpenAI Codex in DSH."
+  },
+  "tools": {
+    "loginStarted": "Die Anmeldung bei OpenAI Codex mit ChatGPT wurde gestartet.",
+    "deviceCode": "Gerätecode: {code}",
+    "verificationUrl": "Bestätigungs-URL: {url}",
+    "loginInstructions": "Bitte den Nutzer, die Bestätigungs-URL zu öffnen und den Gerätecode einzugeben. Rufe nach der Autorisierung codex_status auf, um die Anmeldung zu bestätigen.",
+    "loginStartFailed": "Die Anmeldung konnte nicht gestartet werden. {reason}",
+    "loginTimedOut": "Der Gerätecode wurde nicht rechtzeitig abgerufen. Versuche die Anmeldung erneut.",
+    "loginWaiting": "Die Anmeldung läuft.",
+    "notAvailable": "(noch nicht verfügbar)",
+    "checkStatus": "Bitte den Nutzer, die Autorisierung abzuschließen, und prüfe den Status danach erneut.",
+    "previousLoginFailed": "Die letzte Anmeldung ist fehlgeschlagen. {reason}",
+    "notLoggedIn": "Du bist abgemeldet. Rufe codex_login auf, um dich mit ChatGPT anzumelden.",
+    "loggedIn": "Bei ChatGPT angemeldet.",
+    "signInExpires": "Das Token läuft am {date} ab und wird automatisch erneuert.",
+    "signedOut": "Von ChatGPT abgemeldet.",
+    "logoutFailed": "Die lokalen OpenAI-Codex-Anmeldedaten konnten nicht gelöscht werden. Versuche, dich erneut abzumelden.",
+    "providerNotSignedIn": "Du bist bei OpenAI Codex abgemeldet. Öffne Einstellungen → OpenAI Codex und melde dich an.",
+    "loginFailed": "Die Anmeldung bei OpenAI Codex konnte nicht abgeschlossen werden. Versuche es erneut.",
+    "refreshSignInFailed": "Die Anmeldung bei OpenAI Codex konnte nicht erneuert werden. Melde dich erneut an.",
+    "verificationUrlMissing": "OpenAI hat keine URL zur Gerätebestätigung zurückgegeben.",
+    "verificationUrlInvalid": "OpenAI hat eine ungültige URL zur Gerätebestätigung zurückgegeben.",
+    "verificationUrlUntrusted": "Die URL zur Gerätebestätigung gehört nicht zum OpenAI-Anmeldedienst.",
+    "proxyUnavailable": "Der manuelle HTTP/HTTPS-Proxy von Windows ist nicht verfügbar. Richte einen manuellen Proxy ein oder verwende die DSH-Einstellungen."
+  }
+}

@@ -1,11 +1,12 @@
 {
   "name": "dsh-openai-codex-auth",
   "description": "Unofficial OpenAI Codex provider for DeepSeek Harness with ChatGPT subscription sign-in.",
-  "version": "0.6.7",
+  "version": "0.7.0",
   "type": "module",
   "main": "lib/index.js",
   "files": [
     "lib",
+    "locale/*.json",
     "docs/assets",
     "cordis.patch.yml",
     "README.zh-CN.md",
@@ -17,6 +18,7 @@
     "./client": "./lib/client.js",
     "./remote": "./lib/remote.js",
     "./typert": "./lib/remote.js",
+    "./locale/*.json": "./locale/*.json",
     "./cordis.patch.yml": "./cordis.patch.yml",
     "./package.json": "./package.json"
   },
@@ -46,7 +48,7 @@
     }
   },
   "scripts": {
-    "check": "node --check lib/index.js && node --check lib/provider.js && node --check lib/remote-service.js && node --check lib/remote.js && node --check lib/client.js && node --check lib/usage.js && node --check lib/system-proxy.js && node --check lib/system-proxy-worker.js && node --check lib/proxy-manager.js && node --check lib/reset-credits.js",
+    "check": "node --check lib/index.js && node --check lib/tool-locale.js && node --check lib/provider.js && node --check lib/remote-service.js && node --check lib/remote.js && node --check lib/client.js && node --check lib/usage.js && node --check lib/system-proxy.js && node --check lib/system-proxy-worker.js && node --check lib/proxy-manager.js && node --check lib/reset-credits.js",
     "test": "node --test",
     "prepublishOnly": "npm run check && npm test"
   },

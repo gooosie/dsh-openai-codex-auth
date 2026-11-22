@@ -6,12 +6,8 @@ Adds an `openai-codex` model provider to
 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness). Sign in
 with an eligible ChatGPT subscription instead of an OpenAI Platform API key.
 
-Only one plugin should own an LLM provider route. Enabling two implementations
-of `openai-codex` causes an adapter registration conflict.
-
-This includes DSH `0.2.0-rc.2`'s built-in `llm-pi-ai.providers.openai-codex`
-route: do not configure it alongside this plugin. Coexistence is not supported;
-enabling both prevents this plugin from activating.
+If your profile configures the built-in `llm-pi-ai.providers.openai-codex` route,
+disable it before enabling this plugin to avoid a provider registration conflict.
 
 <p align="center">
   <img src="./docs/assets/openai-codex-settings-en.png" alt="OpenAI Codex settings in English" width="760">
@@ -28,23 +24,14 @@ enabling both prevents this plugin from activating.
 
 ## Requirements
 
-- DSH `0.2.0-rc.2` Web or Windows Desktop (the tested host version).
-  Also supports DSH `0.2.1-rc.2` with host pi-ai `1.1.0` or `1.3.0`,
-  DSH `0.2.1-rc.5` Web with host pi-ai `1.4.0`,
-  DSH `0.2.2-rc.1` Web with host Cordis `4.1.0` and pi-ai `1.5.0`,
-  Windows Desktop `0.2.2-rc.3` with host pi-ai `1.3.0`,
-  and DSH `0.2.2-rc.5` Web with host pi-ai `1.5.2`.
-  The DSH `0.2.2` range accepts RCs from `rc.1` and the final `0.2.2` release;
-  DSH `0.2.3` and later require another compatibility review. Future RCs are
-  allowed by the manifest but are not automatically considered tested.
-  The pi-ai `1.5` range accepts stable patch releases (`>=1.5.0 <1.6.0`);
-  `1.5.0` and `1.5.2` have been tested. Other supported pi-ai versions remain exact.
-- Node.js `>=22.19.0` for CLI installations; Desktop includes its own runtime.
+- DSH `0.2.0-rc.2`, `0.2.1-rc.2`, `0.2.1-rc.5`, or `>=0.2.2-rc.1 <0.2.3-0`.
+  See [package.json](./package.json) for compatible Cordis and pi-ai versions.
+- Node.js `>=22.19.0` for CLI installations. Desktop includes its own runtime.
 - A ChatGPT subscription eligible for Codex, with device-code sign-in enabled.
 
-Models come from the host's pi-ai catalog. DSH `0.2.0-rc.2` ships pi-ai
-`0.87.1`, which includes GPT-6 Sol and GPT-6 Luna. Model availability still depends on your account. This plugin does not
-replace the host's model catalog or install a second provider runtime.
+Available models depend on the host's pi-ai catalog and your account. Web
+settings were verified on DSH `0.2.2-rc.5`, and Desktop compatibility checks
+covered the bundled `0.2.2-rc.3` runtime.
 
 ## Install or update
 
@@ -58,48 +45,20 @@ Restart DSH after installing or updating.
 
 ### Windows Desktop
 
-In Desktop's plugin manager, install `dsh-openai-codex-auth@0.6.7`.
-The manager installs into the active Desktop profile and activates the bundle;
-no separate global Node.js, pnpm, or CLI installation is needed.
-If an update requests a restart, restart Desktop before checking the new UI.
-
-Desktop `0.2.0-rc.2` carries its own DSH runtime and uses the separate `desktop`
-profile. Installing into `web` does not install into Desktop. Keep
-`dsh.client.platform: web`: Desktop renders the same Web plugin UI.
-
-The following CLI alternative applies only to Desktop `0.2.0-rc.2`;
-`0.2.1-rc.2` reserves the Desktop profile for the app, so use its plugin manager.
-Open Desktop once to initialize its profile, then **fully quit it**, including
-the tray process, before using its bundled CLI from PowerShell:
-
-```powershell
-$desktopDsh = "$env:LOCALAPPDATA\Programs\DeepSeek Harness\resources\runtime\cli\bin\dsh.cmd"
-& $desktopDsh plugin --profile desktop add dsh-openai-codex-auth@0.6.7
-```
-
-Adjust the path for a custom installation. Do not substitute an npm-installed
-`dsh` for this command. Restart Desktop and open **Settings → OpenAI Codex**.
-Use the same CLI with `plugin --profile desktop remove dsh-openai-codex-auth`
-to uninstall after fully quitting Desktop.
-
-Plugin `0.6.7` supports DSH `0.2.0-rc.2`, `0.2.1-rc.2`, `0.2.1-rc.5`, and the `>=0.2.2-rc.1 <0.2.3-0` range. For DSH `0.1.7-rc.2`, use plugin
-`0.4.2` instead. Do not bypass compatibility checks.
-
-Validation covers isolated installation, the bundled Desktop runtime and Web
-settings/RPC. Native Electron window interactions and real OAuth/model requests
-are not part of the automated verification.
+Use Desktop's plugin manager to install or update `dsh-openai-codex-auth` in
+the active Desktop profile. Restart Desktop when prompted.
 
 ### From source
 
-The following targets CLI / Web. For Desktop, use its bundled CLI with
-`plugin --profile desktop add .` after fully quitting the app.
+For CLI / Web, run the following from the repository root.
 
 ```sh
 npm install
 dsh plugin --profile web add .
 ```
 
-The package is a DSH bundle, so no separate install script is required.
+For Desktop, enter the absolute path to this repository in the plugin manager's
+**Add plugin** dialog.
 
 ## Usage
 
@@ -107,7 +66,13 @@ The package is a DSH bundle, so no separate install script is required.
 2. Open the verification page, enter the displayed device code, and authorize.
 3. Select a model under **OpenAI Codex** in the model selector.
 
-DSH agents can also call `codex_login`, `codex_status`, and `codex_logout`.
+The settings page follows DSH's interface language. Translations are available
+in English, Simplified Chinese, Japanese, Spanish, French, German, Russian, and
+Brazilian Portuguese.
+
+DSH agents can call `codex_login`, `codex_status`, and `codex_logout`. The tools
+use DSH's saved language preference, or the host system language when no
+preference is saved. English is the fallback for unsupported languages.
 
 ### Reset cards
 
@@ -151,16 +116,48 @@ dsh web
 
 ## Uninstall
 
-The command below targets CLI / Web. For Desktop, use its plugin manager or
-the bundled CLI described above; removing the Web installation does not remove Desktop's copy.
+Sign out under **Settings → OpenAI Codex** in the profile you are removing.
 
-Sign out under **Settings → OpenAI Codex** first, then run:
+On Windows Desktop, remove `dsh-openai-codex-auth` in Desktop's plugin manager
+and restart if prompted.
+
+For CLI / Web, run the following and restart DSH.
 
 ```sh
 dsh plugin --profile web remove dsh-openai-codex-auth
 ```
 
-Restart DSH afterward.
+## Legacy versions
+
+For DSH `0.1.7-rc.2`, install `dsh-openai-codex-auth@0.4.2`.
+
+### Windows Desktop `0.2.0-rc.2`
+
+This version can also use its bundled CLI. Open Desktop once to initialize its
+profile. If you are uninstalling, sign out in Settings first. Then **fully quit
+Desktop**, including the tray process. Set the path to the bundled CLI in
+PowerShell, adjusting it for a custom installation.
+
+```powershell
+$desktopDsh = "$env:LOCALAPPDATA\Programs\DeepSeek Harness\resources\runtime\cli\bin\dsh.cmd"
+```
+
+To install, run the following.
+
+```powershell
+& $desktopDsh plugin --profile desktop add dsh-openai-codex-auth@0.6.7
+```
+
+To install from source on this version, run the same command from the
+repository root with `.` as the package specifier.
+
+To uninstall, run the following with the same bundled CLI.
+
+```powershell
+& $desktopDsh plugin --profile desktop remove dsh-openai-codex-auth
+```
+
+Reopen Desktop after either operation.
 
 ## Security
 

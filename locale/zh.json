@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "title": "OpenAI Codex 登录",
+    "description": "使用 ChatGPT 账号登录并在 DSH 中使用 OpenAI Codex。",
+    "detail": "README.zh-CN.md"
+  },
+  "tools": {
+    "loginStarted": "已开始使用 ChatGPT 账号登录 OpenAI Codex。",
+    "deviceCode": "设备码：{code}",
+    "verificationUrl": "验证网址：{url}",
+    "loginInstructions": "请让用户打开验证网址并输入设备码。完成授权后调用 codex_status 确认登录。",
+    "loginStartFailed": "无法开始登录。{reason}",
+    "loginTimedOut": "获取设备码超时，请重新登录。",
+    "loginWaiting": "正在登录。",
+    "notAvailable": "（尚未取得）",
+    "checkStatus": "请让用户完成授权后再查一次。",
+    "previousLoginFailed": "上次登录失败。{reason}",
+    "notLoggedIn": "尚未登录。调用 codex_login 使用 ChatGPT 账号登录。",
+    "loggedIn": "已登录 ChatGPT。",
+    "signInExpires": "令牌有效期至 {date}，届时会自动刷新。",
+    "signedOut": "已退出 ChatGPT 登录。",
+    "logoutFailed": "无法清除本地 OpenAI Codex 凭据，请重试退出登录。",
+    "providerNotSignedIn": "OpenAI Codex 尚未登录。请打开「设置 → OpenAI Codex」并登录。",
+    "loginFailed": "无法完成 OpenAI Codex 登录，请重试。",
+    "refreshSignInFailed": "无法续期 OpenAI Codex 登录，请重新登录。",
+    "verificationUrlMissing": "OpenAI 未返回设备验证网址。",
+    "verificationUrlInvalid": "OpenAI 返回了无效的设备验证网址。",
+    "verificationUrlUntrusted": "设备验证网址不属于 OpenAI 登录服务。",
+    "proxyUnavailable": "Windows 手动 HTTP/HTTPS 代理不可用。请设置手动代理或跟随 DSH。"
+  }
+}

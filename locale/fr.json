@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "title": "Connexion à OpenAI Codex",
+    "description": "Connectez-vous avec ChatGPT pour utiliser OpenAI Codex dans DSH."
+  },
+  "tools": {
+    "loginStarted": "La connexion à OpenAI Codex avec ChatGPT a été lancée.",
+    "deviceCode": "Code d’appareil : {code}",
+    "verificationUrl": "URL de vérification : {url}",
+    "loginInstructions": "Demandez à l’utilisateur d’ouvrir l’URL de vérification et de saisir le code d’appareil. Une fois l’autorisation accordée, appelez codex_status pour confirmer la connexion.",
+    "loginStartFailed": "Impossible de lancer la connexion. {reason}",
+    "loginTimedOut": "Le délai d’obtention du code d’appareil est dépassé. Réessayez de vous connecter.",
+    "loginWaiting": "Connexion en cours.",
+    "notAvailable": "(pas encore disponible)",
+    "checkStatus": "Demandez à l’utilisateur de terminer l’autorisation, puis vérifiez à nouveau.",
+    "previousLoginFailed": "La dernière tentative de connexion a échoué. {reason}",
+    "notLoggedIn": "Vous êtes déconnecté. Appelez codex_login pour vous connecter avec ChatGPT.",
+    "loggedIn": "Connecté à ChatGPT.",
+    "signInExpires": "Le jeton expire le {date} et se renouvelle automatiquement.",
+    "signedOut": "Déconnecté de ChatGPT.",
+    "logoutFailed": "Impossible de supprimer les identifiants locaux d’OpenAI Codex. Réessayez de vous déconnecter.",
+    "providerNotSignedIn": "Vous êtes déconnecté d’OpenAI Codex. Ouvrez Paramètres → OpenAI Codex et connectez-vous.",
+    "loginFailed": "Impossible de terminer la connexion à OpenAI Codex. Réessayez.",
+    "refreshSignInFailed": "Impossible de renouveler la connexion à OpenAI Codex. Reconnectez-vous.",
+    "verificationUrlMissing": "OpenAI n’a fourni aucune URL de vérification de l’appareil.",
+    "verificationUrlInvalid": "OpenAI a fourni une URL de vérification de l’appareil invalide.",
+    "verificationUrlUntrusted": "L’URL de vérification de l’appareil n’appartient pas au service de connexion d’OpenAI.",
+    "proxyUnavailable": "Le proxy HTTP/HTTPS manuel de Windows est indisponible. Configurez un proxy manuel ou utilisez les paramètres de DSH."
+  }
+}

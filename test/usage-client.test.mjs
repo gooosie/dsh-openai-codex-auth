@@ -8,7 +8,7 @@ function harness() {
 	let client;
 	const effects = [], timers = new Map();
 	const jsx = (type, props) => ({ type, props });
-	runInNewContext(source.replace("exports.apply = apply;", "exports.Loaded = Loaded; exports.en = en; exports.zh = zh; exports.apply = apply;"), {
+	runInNewContext(source.replace("exports.apply = apply;", "exports.Loaded = Loaded; exports.en = en; exports.zh = zh; exports.fr = fr; exports.apply = apply;"), {
 		setInterval: (fn, delay) => { timers.set(fn, delay); return fn; },
 		clearInterval: (id) => timers.delete(id),
 		window: { __ModuleLoader__: { load: ({ factory }) => { client = factory((name) => {
@@ -34,6 +34,7 @@ for (const language of ["en", "zh"]) {
 					{ name: "Codex", usedPercent: 100, windowSeconds: 604800, resetAt: 9000 }, ...additional
 				] };
 				const tree = client.Loaded({ injected: { controller: {}, t: (key) => client[language][key],
+					useLocale: (select) => select({ active: language }),
 					useSnapshot: () => ({ status: "ready", credentialConfigured: true, section }) } });
 				const warnings = texts(tree).filter((text) => text.includes(client[language].usageLimited));
 				assert.deepEqual(warnings, limited ? [client[language].usageLimited] : []);
@@ -41,11 +42,28 @@ for (const language of ["en", "zh"]) {
 		}
 	});
 }
+
+test("settings translate safe error codes and hide unrecognized error text", () => {
+	const { client } = harness();
+	const section = { status: "error", error: "verificationUrlMissing", usageStatus: "error", usageError: "unexpected error detail" };
+	const render = (language) => client.Loaded({ injected: {
+		controller: {}, t: (key) => client[language][key], useLocale: (select) => select({ active: language }),
+		useSnapshot: () => ({ status: "ready", credentialConfigured: true, section })
+	} });
+	for (const language of ["zh", "fr"]) {
+		const labels = texts(render(language));
+		assert.ok(labels.includes(client[language].verificationUrlMissing));
+		assert.ok(labels.includes(client[language].usageFailed));
+		assert.ok(labels.every((label) => !label.includes(section.usageError)));
+	}
+});
+
 test("ready settings refresh on each mount, every minute, and stop on unmount", () => {
 	for (let mount = 0; mount < 2; mount++) {
 		const { client, effects, timers } = harness();
 		const calls = [];
 		client.Loaded({ injected: { controller: { load: (options) => calls.push(options) }, t: (key) => key,
+			useLocale: (select) => select({ active: "en" }),
 			useSnapshot: () => ({ status: "ready", credentialConfigured: true, section: { status: "done", usageStatus: "ready" } }) } });
 		const cleanups = effects.map((effect) => effect()).filter((cleanup) => typeof cleanup === "function");
 		assert.equal(calls.length, 1);

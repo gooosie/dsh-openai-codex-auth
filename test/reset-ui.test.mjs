@@ -30,7 +30,8 @@ function harness(consumeReset) {
 		crypto: { randomUUID: () => "12345678-1234-4234-8234-123456789abc" }
 	});
 	const props = { section: { usageResetCredits: 2, resetCardsStatus: "ready", resetCards: [{ id: "card-1", expiresAt: null }, { id: "card-2", expiresAt: 4102444800000 }] },
-		controller: { consumeReset }, t: (key) => key, setBusy: (value) => { busy = value; } };
+		controller: { consumeReset }, t: (key, params) => key === "resetExpires" ? params.date : key,
+		locale: "en-US", setBusy: (value) => { busy = value; } };
 	const render = () => { cursor = 0; return ResetCards({ ...props, busy }); };
 	const walk = (node) => !node || typeof node !== "object" ? [] : [node, ...[node.props?.children].flat().flatMap(walk)];
 	const find = (root, label) => walk(root).find((node) => node.props?.children === label);

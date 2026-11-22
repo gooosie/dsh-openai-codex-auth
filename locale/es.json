@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "title": "Inicio de sesión en OpenAI Codex",
+    "description": "Inicia sesión con ChatGPT y usa OpenAI Codex en DSH."
+  },
+  "tools": {
+    "loginStarted": "Se ha iniciado el proceso de acceso a OpenAI Codex con ChatGPT.",
+    "deviceCode": "Código de dispositivo: {code}",
+    "verificationUrl": "URL de verificación: {url}",
+    "loginInstructions": "Pide al usuario que abra la URL de verificación e introduzca el código de dispositivo. Tras la autorización, llama a codex_status para confirmar el acceso.",
+    "loginStartFailed": "No se pudo iniciar el proceso de acceso. {reason}",
+    "loginTimedOut": "Se agotó el tiempo de espera del código de dispositivo. Intenta iniciar sesión de nuevo.",
+    "loginWaiting": "Inicio de sesión en curso.",
+    "notAvailable": "(todavía no disponible)",
+    "checkStatus": "Pide al usuario que complete la autorización y vuelve a comprobar el estado.",
+    "previousLoginFailed": "El último inicio de sesión falló. {reason}",
+    "notLoggedIn": "No has iniciado sesión. Llama a codex_login para iniciar sesión con ChatGPT.",
+    "loggedIn": "Sesión iniciada en ChatGPT.",
+    "signInExpires": "El token caduca el {date} y se renueva automáticamente.",
+    "signedOut": "Se ha cerrado la sesión de ChatGPT.",
+    "logoutFailed": "No se pudo eliminar la credencial local de OpenAI Codex. Intenta cerrar sesión de nuevo.",
+    "providerNotSignedIn": "No has iniciado sesión en OpenAI Codex. Abre Ajustes → OpenAI Codex e inicia sesión.",
+    "loginFailed": "No se pudo completar el inicio de sesión en OpenAI Codex. Inténtalo de nuevo.",
+    "refreshSignInFailed": "No se pudo renovar la sesión de OpenAI Codex. Vuelve a iniciar sesión.",
+    "verificationUrlMissing": "OpenAI no devolvió una URL de verificación del dispositivo.",
+    "verificationUrlInvalid": "OpenAI devolvió una URL de verificación del dispositivo no válida.",
+    "verificationUrlUntrusted": "La URL de verificación del dispositivo no pertenece al servicio de inicio de sesión de OpenAI.",
+    "proxyUnavailable": "El proxy HTTP/HTTPS manual de Windows no está disponible. Configura un proxy manual o usa los ajustes de DSH."
+  }
+}
